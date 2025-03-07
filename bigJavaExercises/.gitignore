@@ -1,0 +1,7 @@
+.idea/
+.vscode/
+bin/
+out/
+lib/
+README.md
+bigJavaExercises.iml

@@ -39,5 +39,6 @@ public class E6_2 {
                         "\nThe number of Odds: " + coo +
                         "\nCumulative total: " + cTotal +
                         "\nAdjacent duplicates: " + adjDup);
+    in.close();
     }
 }
