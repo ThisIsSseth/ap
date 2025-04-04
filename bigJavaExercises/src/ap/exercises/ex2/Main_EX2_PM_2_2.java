@@ -39,7 +39,7 @@ public class Main_EX2_PM_2_2 {
         board.print();
         byte move = 0;
         long startTime = System.currentTimeMillis();
-        
+
         while (board.getNumOfDot() > 0 && move != 4) {
 
             System.out.println("enter a move:\n0.up\n1.right\n2.down\n3.left\n4. Save and Exit");

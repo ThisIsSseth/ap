@@ -32,6 +32,6 @@ public class Main_EX2_PM_1_2 {
                 System.out.println();
             }
         }
-
+        sc.close();
     }
 }

@@ -1,4 +1,4 @@
-package ap.exercises.ex3;
+package ap.exercises.ex2;
 
 import java.util.Random;
 import java.util.Scanner;

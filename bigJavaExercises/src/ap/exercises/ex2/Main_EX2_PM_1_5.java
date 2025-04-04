@@ -6,14 +6,14 @@ import java.util.Scanner;
 public class Main_EX2_PM_1_5 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("enter a number (1-127):");
+        System.out.println("enter the dimension (1-127):");
         byte k = sc.nextByte();
         if (k < 0) {
             System.out.println("Invalid number");
         } else {
             Board board = new Board();
             board.createBoard(k);
-//            System.out.println("enter a number (1-127):");
+//            System.out.println("enter a  of dots (1-127):");
 //            byte c = sc.nextByte();
 //            while (c >= k * k || c < 0) {
 //                System.out.println("out of range! try again:");
@@ -23,8 +23,10 @@ public class Main_EX2_PM_1_5 {
             board.print();
             byte move;
             while (true) {
-                System.out.println("enter a move:\n0.up\n1.right\n2.down\n3.left");
-                move = sc.nextByte();
+//                System.out.println("enter a move:\n0.up\n1.right\n2.down\n3.left");
+//                move = sc.nextByte();
+                Random moveRand = new Random();
+                move = (byte) moveRand.nextInt(4);
                 board.xMove(move);
                 board.print();
             }
@@ -146,7 +148,6 @@ public class Main_EX2_PM_1_5 {
             try {
                 Thread.sleep(1000);
             } catch (Exception e) {}
-            System.out.println("\n---------");
         }
     }
 }
