@@ -14,6 +14,7 @@ public class Main_EX2_PM_3_1 extends JFrame implements KeyListener {
     static int direction = 1, score = 0;
     final int LEFT = 1, RIGHT = 2, TOP = 3, BOTTOM = 4;
     Point dotPoint = new Point();
+    boolean quit = false;
 
     public Main_EX2_PM_3_1() {
         addKeyListener(this);
@@ -30,6 +31,8 @@ public class Main_EX2_PM_3_1 extends JFrame implements KeyListener {
         drawPacman(g2D);
         drawDotPoint(g2D);
         drawScore(g2D);
+        if (quit)
+            askExit(g2D);
         setVisible(true);
     }
 
@@ -83,7 +86,7 @@ public class Main_EX2_PM_3_1 extends JFrame implements KeyListener {
                 break;
         }
         pacmanPoint.setLocation(pacmanPoint.x + xMovement, pacmanPoint.y + yMovement);
-        System.out.println(pacmanPoint.x + " " + pacmanPoint.y);
+
         handleCrossBorder();
     }
 
@@ -100,22 +103,41 @@ public class Main_EX2_PM_3_1 extends JFrame implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_UP)
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
             direction = 3;
-        else if (e.getKeyCode() == KeyEvent.VK_DOWN)
+            quit = false;
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             direction = 4;
-        else if (e.getKeyCode() == KeyEvent.VK_LEFT)
+            quit = false;
+        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             direction = 1;
-        else if (e.getKeyCode() == KeyEvent.VK_RIGHT)
+            quit = false;
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             direction = 2;
-        else if (e.getKeyCode() == KeyEvent.VK_P)
+            quit = false;
+        } else if (e.getKeyCode() == KeyEvent.VK_P) {
             direction = 0;
-        else
+            quit = false;
+        } else if (e.getKeyCode() == KeyEvent.VK_Q) {
+            System.exit(0);
+            quit = true;
+        } else if (e.getKeyCode() == KeyEvent.VK_Y) {
+            if (quit)
+                System.exit(0);
+        } else {
             direction = -1;
+            quit = false;
+        }
 
         System.out.println("direction:" + direction + "    <- e.getKeyCode()=" + e.getKeyCode());
 
         repaint();
+    }
+
+    private void askExit(Graphics2D g2d) {
+        g2d.setColor(Color.BLACK);
+        String s = "U sure?\n[y/n]\n";
+        g2d.drawString(s, 25, 70);
     }
 
     @Override
