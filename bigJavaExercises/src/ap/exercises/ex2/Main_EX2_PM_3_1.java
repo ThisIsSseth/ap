@@ -83,6 +83,7 @@ public class Main_EX2_PM_3_1 extends JFrame implements KeyListener {
                 break;
         }
         pacmanPoint.setLocation(pacmanPoint.x + xMovement, pacmanPoint.y + yMovement);
+        System.out.println(pacmanPoint.x + " " + pacmanPoint.y);
         handleCrossBorder();
     }
 
@@ -122,7 +123,34 @@ public class Main_EX2_PM_3_1 extends JFrame implements KeyListener {
     }
 
     private void handleCrossBorder() {
-        //
+        //wrapping (deepSeek :p )
+//        int gridWidth = width / boxSize;
+//        int gridHeight = height / boxSize;
+//
+//        // Handle x-axis wrapping
+//        if (pacmanPoint.x < 0) {
+//            pacmanPoint.x = gridWidth - 1;
+//        } else if (pacmanPoint.x >= gridWidth) {
+//            pacmanPoint.x = 0;
+//        }
+//
+//        // Handle y-axis wrapping
+//        if (pacmanPoint.y < 0) {
+//            pacmanPoint.y = gridHeight - 1;
+//        } else if (pacmanPoint.y >= gridHeight) {
+//            pacmanPoint.y = 0;
+//        }
+        //29 6
+        //2 6
+        //58 58
+        if (pacmanPoint.x == 2)
+            pacmanPoint.x = 58;
+        else if (pacmanPoint.x == 58)
+            pacmanPoint.x = 2;
+        if (pacmanPoint.y < 6)
+            pacmanPoint.y = 58;
+        else if (pacmanPoint.y == 58)
+            pacmanPoint.y = 6;
     }
 
 
