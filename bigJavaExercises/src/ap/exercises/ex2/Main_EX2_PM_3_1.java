@@ -14,7 +14,8 @@ public class Main_EX2_PM_3_1 extends JFrame implements KeyListener {
     static int direction = 1, score = 0;
     final int LEFT = 1, RIGHT = 2, TOP = 3, BOTTOM = 4;
     Point dotPoint = new Point();
-    boolean quit = false;
+    boolean quit = false, maxTime = false, maxScore = false;
+    long initial = System.currentTimeMillis();
 
     public Main_EX2_PM_3_1() {
         addKeyListener(this);
@@ -31,8 +32,9 @@ public class Main_EX2_PM_3_1 extends JFrame implements KeyListener {
         drawPacman(g2D);
         drawDotPoint(g2D);
         drawScore(g2D);
-        if (quit)
-            askExit(g2D);
+        askExit(g2D);
+        drawTime(g2D);
+        Timeout();
         setVisible(true);
     }
 
@@ -42,21 +44,42 @@ public class Main_EX2_PM_3_1 extends JFrame implements KeyListener {
     }
 
     private void drawDotPoint(Graphics2D g2d) {
-        g2d.setColor(Color.RED);
-        g2d.fillRect(dotPoint.x * boxSize, dotPoint.y * boxSize, boxSize, boxSize);
+        if (!maxScore) {
+            g2d.setColor(Color.RED);
+            g2d.fillRect(dotPoint.x * boxSize, dotPoint.y * boxSize, boxSize, boxSize);
+        }
     }
 
     private void drawScore(Graphics2D g2d) {
         g2d.setColor(Color.BLACK);
-        String s = "Score: " + score;
+        String s = "Score: " + score + "/25";
+        if (maxScore) {
+            s += " you won!";
+        }
         g2d.drawString(s, 25, 50);
     }
 
+    private void drawTime(Graphics2D g2d) {
+        g2d.setColor(Color.BLACK);
+        String s = ((System.currentTimeMillis() - initial) / 1000) / 60 + ":" + ((System.currentTimeMillis() - initial) / 1000) % 60 + "s";
+        String s1 = System.currentTimeMillis() - initial + "";
+        g2d.drawString(s, 25, 70);
+    }
+
+    private void Timeout() {
+        if ((System.currentTimeMillis() - initial) / (2*60000) >= 1) {
+            System.out.println("Time out error!");
+            System.exit(0);
+        }
+    }
+
     private void logic() {
-        if (dotPoint.x == pacmanPoint.x && dotPoint.y == pacmanPoint.y) {
+        if (dotPoint.x == pacmanPoint.x && dotPoint.y == pacmanPoint.y && !maxScore) {
             getNewDotPointLocation();
             score++;
             System.out.println("Score: " + score);
+            if (score > 24)
+                maxScore = true;
         }
         movePacman();
     }
@@ -135,9 +158,11 @@ public class Main_EX2_PM_3_1 extends JFrame implements KeyListener {
     }
 
     private void askExit(Graphics2D g2d) {
-        g2d.setColor(Color.BLACK);
-        String s = "U sure?\n[y/n]\n";
-        g2d.drawString(s, 25, 70);
+        if (quit) {
+            g2d.setColor(Color.BLACK);
+            String s = "U sure?\n[y/n]\n";
+            g2d.drawString(s, 25, 100);
+        }
     }
 
     @Override
