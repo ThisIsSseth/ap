@@ -45,7 +45,7 @@ public class Main_EX3_LM_1_2 {
         student2.setMajor(major1);
         student2.setId(id2);
 
-        Student[] studentList = new Student[4];
+        Student[] studentList = new Student[4]; // B
         Book[] bookList = new Book[3];
         byte i = 0;
         for (; i < studentList.length; i++) {
@@ -185,7 +185,7 @@ public class Main_EX3_LM_1_2 {
         String fileName = new String();
         Path filePath;
 
-        public Saver(String filename) {
+        public Saver(String filename) { 
             fileName = filename;
             filePath = Paths.get(fileName).toAbsolutePath();
             createFile();
