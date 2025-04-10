@@ -16,12 +16,16 @@ import java.util.Random;
         boolean quit = false;
         boolean maxScore = false;
         long initial = System.currentTimeMillis();
+        int timeLimit;
+        int scoreGoal;
 
-        public PacmanGUI() {
+        public PacmanGUI(int timelimit, int scoregoal) {
             addKeyListener(this);
             pacmanPoint.setLocation((width / boxSize) / 2, (height / boxSize) / 2);
             getNewDotPointLocation();
             setSize(width, height);
+            timeLimit = timelimit;
+            scoreGoal = scoregoal;
         }
 
         @Override
@@ -52,7 +56,7 @@ import java.util.Random;
 
         private void drawScore(Graphics2D g2d) {
             g2d.setColor(Color.BLACK);
-            String s = "Score: " + score + "/25";
+            String s = "Score: " + score + "/" + scoreGoal;
             if (maxScore) {
                 s += " you won!";
             }
@@ -66,7 +70,7 @@ import java.util.Random;
         }
 
         private void Timeout() {
-            if ((System.currentTimeMillis() - initial) / (2 * 60000) >= 1) {
+            if ((System.currentTimeMillis() - initial) / (timeLimit * 60000L) >= 1) {
                 System.out.println("Time out error!");
                 System.exit(0);
             }
@@ -77,7 +81,7 @@ import java.util.Random;
                 getNewDotPointLocation();
                 score++;
                 System.out.println("Score: " + score);
-                if (score > 24)
+                if (score > scoreGoal)
                     maxScore = true;
             }
             movePacman();
