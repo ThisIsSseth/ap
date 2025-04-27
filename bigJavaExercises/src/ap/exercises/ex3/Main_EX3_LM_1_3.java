@@ -1,22 +1,18 @@
 package ap.exercises.ex3;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 public class Main_EX3_LM_1_3 {
     static List<Integer> studentId = new ArrayList<>();
 
-    public static void main(String[] args) {
+    private static void main(String[] args) {
         final String title1 = "Big Java", title2 = "Cooking Book", author1 = "Jack Bauer", author2 = "Gordon Ramsey", firstName1 = "Naghi", lastName1 = "Mamooli", major1 = "Athletics", firstName2 = "Rahmat", lastName2 = "Hezar Jarib ", major2 = "Biology";
         final int page1 = 1000, page2 = 786, publishingY1 = 1995, publishingY2 = 2000, id1 = 400100200, id2 = 400100201;
 
         File studentFile = new File("../ap/exercises/ex3/student.txt");
         File bookFile = new File("../ap/exercises/ex3/book.txt");
+
 
         Book book1 = new Book(title1, author1, page1, publishingY1);
         Book book2 = new Book(title2, author2, page2, publishingY2);
@@ -114,9 +110,9 @@ public class Main_EX3_LM_1_3 {
             System.out.println("Type a name of student to search for: ");
             name = sc.nextLine();
             if (searchByName(name, studentArr) > 0) {
-                System.out.println("Student found!\nID: " + searchByName(name, studentArr));
+                System.out.println("StudentKargah found!\nID: " + searchByName(name, studentArr));
             } else {
-                System.out.println("Student not found!");
+                System.out.println("StudentKargah not found!");
             }
             System.out.println("0. Exit\n1. Search another name");
             lilFlag = false;
@@ -148,7 +144,6 @@ public class Main_EX3_LM_1_3 {
         }
         return false;
     }
-
     static int searchByName(String firstName, Student[] stdArr){
         for (Student a : stdArr){
             if (a.getFirstName().equals(firstName)){
@@ -165,169 +160,4 @@ public class Main_EX3_LM_1_3 {
         return id;
     }
 
-    static class Book {
-
-        private String title;
-        private String author;
-        private int pages;
-        private int publicationYear;
-
-        public Book(String title, String author, int pages, int publicationYear) {
-            this.title = title;
-            this.author = author;
-            this.pages = pages;
-            this.publicationYear = publicationYear;
-        }
-
-        public int getPublicationYear() {
-            return publicationYear;
-        }
-
-        public int getPages() {
-            return pages;
-        }
-
-        public String getAuthor() {
-            return author;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public void setAuthor(String author) {
-            this.author = author;
-        }
-
-        public void setPages(int pages) {
-            this.pages = pages;
-        }
-
-        public void setPublicationYear(int publicationYear) {
-            this.publicationYear = publicationYear;
-        }
-
-
-    }
-
-    static class Student {
-
-        private String firstName;
-        private String lastName;
-        private int id;
-        private String major;
-
-        public Student(String firstName, String lastName, int id, String major) {
-            this.firstName = firstName;
-            this.lastName = lastName;
-            this.id = id;
-            studentId.add(id);
-            this.major = major;
-        }
-
-        public String getFirstName() {
-            return firstName;
-        }
-
-        public void setFirstName(String firstName) {
-            this.firstName = firstName;
-        }
-
-        public String getLastName() {
-            return lastName;
-        }
-
-        public void setLastName(String lastName) {
-            this.lastName = lastName;
-        }
-
-
-        public int getId() {
-            return id;
-        }
-
-        public String getMajor() {
-            return major;
-        }
-
-        public void setMajor(String major) {
-            this.major = major;
-        }
-
-
-    }
-
-    static class Saver {
-        String fileName;
-        Path filePath;
-
-        public Saver(String filename) { //C
-            fileName = filename;
-            filePath = Paths.get(fileName).toAbsolutePath();
-            createFile();
-        }
-
-        public void writeInto(String content) {
-            try {
-                if (Files.exists(filePath) && Files.size(filePath) >= 0) {
-                    try {
-                        if (Files.size(filePath) > 1024 * 1024) {
-                            System.out.println("File too big!\nEmptying...");
-                            Files.writeString(filePath, "");
-                        }
-                        Files.writeString(filePath, content, StandardOpenOption.APPEND);
-                    } catch (IOException e) {
-                        System.out.println("Error: " + e.getMessage());
-                    }
-                } else {
-                    this.createFile();
-                    this.writeInto(content);
-                }
-//                    System.out.println("File is not empty.\nSaving file content...");
-//                    if(backup()){
-//                        System.out.println("Backup complete.\nProceeding with data saving...");
-//                        writeInto(content);
-//                    }
-
-            } catch (IOException ex) {
-                System.out.println("Error: " + ex.getMessage());
-            }
-
-        }
-
-
-//        private boolean backup(){
-//            try {
-//                Files.writeString(filePath, "");
-//            } catch (IOException e) {
-//                System.out.println("Error: " + e.getMessage());
-//            }
-//            return true;
-//        }
-
-        private void createFile() {
-            if (!Files.exists(filePath)) {
-                try {
-                    Files.createFile(filePath);
-                } catch (Exception e) {
-                    System.out.println("Error: " + e.getMessage());
-                }
-            }
-        }
-
-        public List<String> readLinetoList() {
-            try {
-                return List.of(Files.readString(filePath).split("\n"));
-            } catch (IOException e) {
-                System.out.println("Unable to read file\nError: " + e.getMessage());
-            }
-            return null;
-        }
-    }
 }
-

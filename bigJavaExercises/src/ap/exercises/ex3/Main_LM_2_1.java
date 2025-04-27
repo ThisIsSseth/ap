@@ -293,7 +293,7 @@ public class Main_LM_2_1 {
                 return a.getId();
             }
         }
-        if (print) System.out.println("Student not found");
+        if (print) System.out.println("StudentKargah not found");
         return -1;
     }
 }

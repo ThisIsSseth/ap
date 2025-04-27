@@ -34,7 +34,7 @@ public class Main_EX2_PM_1_3 {
             {
                 intRandRow = rand.nextInt(k) + 1;
                 intRandCol = rand.nextInt(k) + 1;
-                if (board[intRandRow][intRandCol] != -1){
+                if (board[intRandRow][intRandCol] != -1 || (intRandRow != 1 && intRandCol != 1)){
                     board[intRandRow][intRandCol] = -1;
                     c--;
                 }

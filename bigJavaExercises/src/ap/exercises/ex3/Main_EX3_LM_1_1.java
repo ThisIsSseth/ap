@@ -11,8 +11,7 @@ public class Main_EX3_LM_1_1 {
         Student student1 = new Student();
         Student student2 = new Student();
 
-        book1.setTitle(title1);
-        book1.setAuthor(author1);
+        book1.setTitle(title1);      book1.setAuthor(author1);
         book1.setPages(page1);
         book1.setPublisher(Publisher1);
         book1.setPublicationYear(publishingY1);
