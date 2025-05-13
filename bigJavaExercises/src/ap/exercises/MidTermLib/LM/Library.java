@@ -3,26 +3,25 @@ package ap.exercises.MidTermLib.LM;
 import ap.exercises.MidTermLib.LM.Members.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Library {
     private Manager manager;
     private String libName;
-    private List<Book> bookList = new ArrayList<Book>();
-    private List<Member> studentList = new ArrayList<>();
-    private List<Member> operatorList = new ArrayList<>();
-
-    public boolean isSignin() {
-        return signin;
-    }
-
-    private boolean signin = false;
-
-
+    private Map<Integer, Book> bookMap = new HashMap<>();
+    private Map<Integer,Student> studentMap = new HashMap<>();
+    private Map<Integer,Operator> operatorMap = new HashMap<>();
+    private List<Borrow> borrowList = new ArrayList<>();
 
 
     public Library(String libName) {
         this.libName = libName;
+    }
+
+    public Manager getManager() {
+        return new Manager(manager.getFirstName(), manager.getLastName(), manager.getId(), manager.getEducation());
     }
 
     public String getLibName() {
@@ -33,20 +32,28 @@ public class Library {
         return manager.passwordCheck(password);
     }
 
-    public List<Member> getStudentList() {
-        return studentList;
+    public Map<Integer, Student> getStudentMap() {
+        return studentMap;
     }
 
-    public List<Member> getOperatorList() {
-        return operatorList;
+    public Map<Integer, Operator> getOperatorMap() {
+        return operatorMap;
     }
 
-    public List<Book> getBookList() {
-        return bookList;
+    public Map<Integer,Book> getBookMap() {
+        return bookMap;
+    }
+
+    @Override
+    public String toString() {
+        return this.libName + "*" ;
+    }
+
+    public List<Borrow> getBorrowMap() {
+        return borrowList;
     }
 
 }
-
 
 /*
 * پروژه میانترم - سیستم مدیریت کتابخانه

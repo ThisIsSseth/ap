@@ -6,23 +6,23 @@ import ap.exercises.MidTermLib.LM.LibManTools.LibraryManager;
 import ap.exercises.MidTermLib.LM.Members.Student;
 
 import java.util.List;
-import java.util.Scanner;
 
 public class LibMenu {
     DefaultCreator defaultCreator = new DefaultCreator();
     Library currentLibrary;
     LibraryManager libraryManager;
     List<Library> libraryList;
+    InputReader inputReader = new InputReader();
 
     public void LibraryMenu() { //Shows libraries to choose from
-        try (Scanner scanner = new Scanner(System.in)) {
+        try {
             System.out.println("Choose a Library:");
             int indexOfLibrary = 1;
             for (Library library : libraryList) {
                 System.out.println(indexOfLibrary + "_ " + library.getLibName());
                 indexOfLibrary++;
             }
-            indexOfLibrary = scanner.nextInt();
+            indexOfLibrary = inputReader.readInt(1, libraryList.size());
             currentLibrary = libraryList.get(indexOfLibrary - 1);
         } catch (NullPointerException e) {
             System.out.println("No library found.\nEntering default library...");
@@ -39,28 +39,24 @@ public class LibMenu {
     public void signInToLibrary() {
         libraryManager = new LibraryManager(currentLibrary);
         signInMenu(libraryManager);
+
     }
 
     /**
      * Sign in system
      */
     void signInMenu(LibraryManager libraryManager) {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("""
                 Enter your role:
                 1. Manager
-                2. Student""");
-        int choice = scanner.nextInt();
-        try {
-            scanner.nextLine();
-        } catch (NullPointerException e) {
-            System.out.println("MenuError1");
-        }
+                2. Student
+                3. Operator""");
+        int choice = inputReader.readInt(1, 3);
 
         switch (choice) {
             case 1 -> {
                 System.out.println("Enter your password: ");
-                int password = scanner.nextInt();
+                int password = inputReader.readPassword();
                 if (libraryManager.managerEntryCheck(password)) {
                     System.out.println("Sign in successful.\nWelcome");
                 } else {
@@ -70,35 +66,45 @@ public class LibMenu {
             case 2 -> {
                 signUp(libraryManager);
                 System.out.println("Enter your id:");
-                int id = scanner.nextInt();
+                int id = inputReader.readID();
                 System.out.println("Enter your password:");
-                int password = scanner.nextInt();
+                int password = inputReader.readPassword();
                 if (libraryManager.studentEntryCheck(password, id)) {
                     System.out.println("Sign in successful.\nWelcome");
                 } else {
                     System.out.println("Invalid password. Try again. Or sign up");
                 }
             }
+            case 3 -> {System.out.println("Enter your id:");
+                int id = inputReader.readID();
+                System.out.println("Enter your password:");
+                int password = inputReader.readPassword();
+                if (libraryManager.operatorEntryCheck(password, id)) {
+                    System.out.println("Sign in successful.\nWelcome");
+                } else {
+                    System.out.println("Invalid password ot ID. Try again.");
+                }
+
+            }
 
         }
     }
 
     void signUp(LibraryManager libraryManager) {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Do you want to Sign Up? (1.y/2.n)");
-        int signUpChoice = scanner.nextInt();
+        int signUpChoice = inputReader.readInt(1, 2);
         switch (signUpChoice) {
             case 1 -> {
                 System.out.println("Enter your first name:");
-                String firstName = scanner.nextLine();
+                String firstName = inputReader.readString();
                 System.out.println("Enter your last name:");
-                String lastName = scanner.nextLine();
+                String lastName = inputReader.readString();
                 System.out.println("Enter your id:");
-                int id = scanner.nextInt();
+                int id = inputReader.readID();
                 System.out.println("Enter your major:");
-                String major = scanner.nextLine();
+                String major = inputReader.readString();
                 System.out.println("Enter your password:");
-                int password = scanner.nextInt();
+                int password = inputReader.readPassword();
                 Student student = new Student(firstName, lastName, id, major, password);
                 if (!libraryManager.studentEntryCheck(password, id)) {
                     libraryManager.addStudent(student);
@@ -109,6 +115,14 @@ public class LibMenu {
             case 2 -> {}
         }
     }
+
+    public void userMenu() {
+        System.out.println(libraryManager.userMenu());
+        System.out.println("Choose an option: ");
+        int option = inputReader.readInt(0, libraryManager.getMaxOptions());
+
+    }
+
 
 
 }

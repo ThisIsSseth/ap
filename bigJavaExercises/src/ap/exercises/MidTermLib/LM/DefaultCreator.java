@@ -15,7 +15,7 @@ public class DefaultCreator {
 
     public List<Member> defaultMemberList() {
         List<Member> memberList = new ArrayList<Member>();
-        memberList.add(new Manager("Manager", "---", 1, 35, "???"));
+        memberList.add(new Manager("Manager", "---", 1, "???"));
         memberList.add(new Operator("OP1", "Op lastName", 2));
         memberList.add(new Operator("OP2", "OP lastName",3));
         return memberList;

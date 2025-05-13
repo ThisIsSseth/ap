@@ -6,4 +6,9 @@ public class Operator extends Member {
         super(firstName, lastName, oPId, 1000);
         this.oPID = oPId;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + this.oPID + "*";
+    }
 }

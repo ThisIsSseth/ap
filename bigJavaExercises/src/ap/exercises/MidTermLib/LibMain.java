@@ -8,7 +8,6 @@ import java.util.List;
 
 public class LibMain {
     public static void main(String[] args) {
-        List<Library> libraryList = new ArrayList<>();
         LibMenu menu = new LibMenu();
 
         System.out.println("Welcome!\nLoading data...");
@@ -16,6 +15,7 @@ public class LibMain {
         //add all found libs to libraryList
         menu.LibraryMenu();
         menu.signInToLibrary();
+
         //here I start managing the library but if gets too complicated i'll move it to a separate class
         //Nope... I need a separate class to manage a single library
 

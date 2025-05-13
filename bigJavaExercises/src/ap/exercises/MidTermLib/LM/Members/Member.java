@@ -1,8 +1,9 @@
 package ap.exercises.MidTermLib.LM.Members;
 
 
-/**Includes {students, operators, manager}
- * */
+/**
+ * Includes {students, operators, manager}
+ */
 public class Member {
     private String firstName;
     private String lastName;
@@ -32,4 +33,14 @@ public class Member {
     public boolean passwordCheck(int password) {
         return pw == password;
     }
+
+    protected int getPw() {
+        return pw;
+    }
+
+    @Override
+    public String toString() {
+        return firstName + "*" + lastName + "*" + id + "*" + pw + "*";
+    }
+
 }
