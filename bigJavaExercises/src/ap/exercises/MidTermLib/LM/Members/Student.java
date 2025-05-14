@@ -10,8 +10,9 @@ public class Student extends Member {
     /**
      * @param firstName First name
      * @param lastName  Last name
-     * @param id        ID (make sure the id is unique)
+     * @param id        ID (make sure the id is unique) a number between 10000 and 99999
      * @param major     Major
+     * @param pw a number between 1000 and 9999
      */
     public Student(String firstName, String lastName, int id, String major, LocalDate signUpDate, int pw) {
         super(firstName, lastName, id, pw);
@@ -25,7 +26,7 @@ public class Student extends Member {
 
     @Override
     public String toString() {
-        return super.toString() + this.major + "*" + this.signUpDate + "*";
+        return super.toString() + this.major + regex + this.signUpDate + regex;
     }
 }
 

@@ -32,7 +32,7 @@ public class InputReader {
         do {
             input = sc.nextInt();
             if (input < 10000 || input > 99999) {
-                System.out.println("Please enter a number between 1000 and 9999");
+                System.out.println("Please enter a number between 10000 and 99999");
             }
         } while (input < 10000 || input > 99999);
         return input;
@@ -40,7 +40,7 @@ public class InputReader {
 
     public String readString() {
         String input = "";
-        while (input != null) {
+        while (input == "") {
             try {
                 input = sc.nextLine();
             } catch (Exception e) {

@@ -39,6 +39,13 @@ public class Book {
 
     public int getCopies() {return copies;}
 
+    public void borrowedACopy() {
+        copies--;
+    }
+
+    public void returnedACopy() {
+        copies++;
+    }
     @Override
     public String toString() {
         return this.title +"*" + this.author +"*" + this.pages +"*" + this.publicationYear + "*" + this.copies + "*";

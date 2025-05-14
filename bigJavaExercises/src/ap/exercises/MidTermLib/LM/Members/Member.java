@@ -9,7 +9,11 @@ public class Member {
     private String lastName;
     private int id;
     private int pw;
+    protected char regex = '@';
 
+    /**
+     * @param  id a number between 10000 and 99999
+     * @param  pw a number between 1000 and 9999*/
     public Member(String firstName, String lastName, int id, int pw) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -40,7 +44,7 @@ public class Member {
 
     @Override
     public String toString() {
-        return firstName + "*" + lastName + "*" + id + "*" + pw + "*";
+        return firstName + regex + lastName + regex + id + regex + pw + regex;
     }
 
 }

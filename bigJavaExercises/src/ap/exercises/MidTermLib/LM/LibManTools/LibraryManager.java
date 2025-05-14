@@ -1,29 +1,52 @@
 package ap.exercises.MidTermLib.LM.LibManTools;
 
+import ap.exercises.MidTermLib.LM.Book;
+import ap.exercises.MidTermLib.LM.Borrow;
 import ap.exercises.MidTermLib.LM.Library;
 import ap.exercises.MidTermLib.LM.Members.Member;
-import ap.exercises.MidTermLib.LM.Members.Operator;
 import ap.exercises.MidTermLib.LM.Members.Student;
 
 public class LibraryManager {
     private Library library;
     private SignIn signIn = new SignIn();
-    private enum Roles {Student, Manager, Operator;};
+    private enum Roles {Student, Manager, Operator;}
     private Roles role;
     private Member user;
     private boolean signInSuccess = false;
-    private int maxOptions= 0;
+    private int maxOptions = 0;
+    private SingleLibrarySaver saver;
+    private Borrowing borrowing;
 
-    public Member getUser() {
-        return user;
+
+    public int getRole() {
+        switch (role) {
+            case Student:
+                return 0;
+            case Manager:
+                return 1;
+            case Operator:
+                return 2;
+            default:
+                return 3;
+        }
+    }
+
+    public String getUserName() {
+        return user.getFirstName() + " " + user.getLastName();
     }
 
     public int getMaxOptions() {
         return maxOptions;
     }
 
+    public LibraryManager(String libName) {
+        this(new Library(libName));
+    }
+
     public LibraryManager(Library library) {
         this.library = library;
+        saver = new SingleLibrarySaver(library);
+
     }
 
     public boolean isSignInSuccess() {
@@ -36,8 +59,7 @@ public class LibraryManager {
             signInSuccess = true;
             user = library.getManager();
             return true;
-        }
-        else return false;
+        } else return false;
     }
 
     public boolean studentEntryCheck(int password, int id) {
@@ -46,11 +68,13 @@ public class LibraryManager {
             signInSuccess = true;
             user = library.getStudentMap().get(id);
             return true;
-        } else {return false;}
+        } else {
+            return false;
+        }
     }
 
     public boolean operatorEntryCheck(int password, int id) {
-        if (signIn.operatorPasswordCheck(password, id, library.getOperatorMap())){
+        if (signIn.operatorPasswordCheck(password, id, library.getOperatorMap())) {
             role = Roles.Operator;
             signInSuccess = true;
             user = library.getOperatorMap().get(id);
@@ -68,9 +92,9 @@ public class LibraryManager {
         return """
                 1. Show the list of books
                 2. Search a book by name
-                3. See the borrows books
-                4. Borrow a book by name
-                5. Return a book
+                3. Borrow a book by name
+                4. Return a book
+                5. See the borrowed books
                 0. Exit""";
     }
 
@@ -92,22 +116,23 @@ public class LibraryManager {
     }
 
     String operatorMenu() {
-        maxOptions = 9;
+        maxOptions = 10;
         return """
-                1. Show the list of books
-                2. Search a book by name
-                3. Borrow a book by name
-                4. Edit and complete personal information
-                5. Add a book
-                6. Confirm pending borrow requests
-                7. Confirm pending return requests
-                8. See borrow history
-                9. See student history
-                0. Exit""";
+                1.  Show the list of books
+                2.  Search a book by name
+                3.  Borrow a book by name
+                4.  Return a book
+                5.  Edit and complete personal information
+                6.  Add a book
+                7.  Confirm pending borrow requests
+                8.  Confirm pending return requests
+                9.  See borrow history
+                10. See student history
+                0.  Exit""";
     }
 
     public String userMenu() {
-        switch (role){
+        switch (role) {
             case Student -> {
                 return studentMenu();
             }
@@ -124,30 +149,69 @@ public class LibraryManager {
         }
     }
 
-    public void exit(){
+    public void exit() {
+        user = null;
+        role = null;
+        signInSuccess = false;
+        maxOptions = 0;
+
         //sign out
     }
 
-    public void optionReceiver(int option) {
-        if (role == Roles.Student) {
-            switch (option){
-                case 1 -> {
+//    public void optionReceiver(int option) {
+//        if (role == Roles.Student) {
+//            switch (option) {
+//                case 1 -> {
+//                    showBooks();
+//                }
+//                case 2 -> {
+//                    searchBooks();
+//                }
+//            }
+//        }
+//    }
 
-                }
+
+    public String bookMenu() {
+        String bookMenu = "";
+        for (Book book : library.getBookList()) {
+            bookMenu += book.getTitle() + " | " + book.getAuthor() + " | Available:" + book.getCopies();
+        }
+        return bookMenu;
+    }
+
+    public Book searchBook(String bookName) {
+        for (Book b : library.getBookList()) {
+            if (b.getTitle().equals(bookName)) {
+                return b;
             }
         }
-
-
+        return null;
     }
 
-    private void showBooks(){
-        /*I want to show books only 10 at once and then going to the next page
-        * So there should be a variable holding pages
-        * and each time we are showing menus of stuff, it should add one to the page
-        *
-        *
-        * */
+    public void borrowingBook(String bookName) {
+        Book book = searchBook(bookName);
+        if (book.getCopies() > 0) {
+            library.getBorrowList().add(borrowing.borrowABook(book, (Student) user, library.getOperatorMap()));
+            book.borrowedACopy();
+        } else {
+            System.out.println("Book unavailable");
+        }
     }
 
-
+    public void returningBook(String bookName) {
+        for (Borrow borrow : library.getBorrowList()) {
+            if (borrow.getBook().getTitle().equals(bookName) && borrow.getStudent().equals(user)) {
+                borrowing.returnABook(borrow, library.getOperatorMap());
+                searchBook(bookName).returnedACopy();
+                System.out.println("Done!");
+                return;
+            }
+        }
+        System.out.println("Book not found.");
+    }
+    public void save() {
+        System.out.println("Saving changes...");
+        saver.saveData();
+    }
 }
