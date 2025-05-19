@@ -7,7 +7,12 @@ public class Book {
     private int pages;
     private int publicationYear;
     private int copies = 1;
+    private String regex = "@";
 
+
+    public String getRegex() {
+        return regex;
+    }
 
     public Book(String title, String author, int pages, int publicationYear, int copies) {
         this.title = title;
@@ -39,16 +44,18 @@ public class Book {
 
     public int getCopies() {return copies;}
 
-    public void borrowedACopy() {
+    /**
+     * substitutes one from the copies */
+    public void substituteCopyByOne() {
         copies--;
     }
 
-    public void returnedACopy() {
+    public void addCopyByOne() {
         copies++;
     }
     @Override
     public String toString() {
-        return this.title +"*" + this.author +"*" + this.pages +"*" + this.publicationYear + "*" + this.copies + "*";
+        return this.title +regex + this.author +regex + this.pages +regex + this.publicationYear + regex + this.copies + regex;
     }
 
 }

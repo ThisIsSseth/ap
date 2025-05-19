@@ -14,15 +14,10 @@ public class Borrow {
     private LocalDate returnDate;
     private LocalDate realReturnDate;
 
-    public Borrow(Student student, Book book, Operator giverOperator) {
-        this(student, book, giverOperator, LocalDate.now());
-    }
 
-    public Borrow(Student student, Book book, Operator giverOperator, LocalDate borrowDate) {
+    public Borrow(Student student, Book book) {
         this.student = student;
         this.book = book;
-        this.borrowDate = borrowDate;
-        this.returnDate = borrowDate.plusDays(7);
     }
 
     public void returnBook(Operator operator) {
@@ -38,14 +33,45 @@ public class Borrow {
         return giverOperator;
     }
 
+    /**
+     * Borrow or Return confirm*/
+    public void confirmByOperator(Operator operator) {
+        if(giverOperator == null) {
+            this.giverOperator = operator;
+            this.borrowDate = LocalDate.now();
+            this.returnDate = borrowDate.plusDays(10);
+        } else if (receiverOperator == null) {
+            this.receiverOperator = operator;
+            this.realReturnDate = LocalDate.now();
+        }
+    }
+
+    public void recreationOfBorrow(Operator giverOperator, LocalDate borrowDate) {
+        this.giverOperator = giverOperator;
+        this.borrowDate = borrowDate;
+    }
+
+    public void recreationOfBorrow(Operator giverOperator, LocalDate borrowDate, Operator receiverOperator, LocalDate realReturnDate) {
+        recreationOfBorrow(giverOperator, borrowDate);
+        this.receiverOperator = receiverOperator;
+        this.realReturnDate = realReturnDate;
+    }
+
     public Student getStudent() {
         return student;
     }
 
     /**
-     * Order: book title @ student id @ giverOP id @ receiverOp id @ borrowDate @ returnDate */
+     * Order: "book title@student id@giverOP id@borrowDate@receiverOp id@returnDate" */
     @Override
     public String toString() {
-        return this.book.getTitle() + "@" + this.student.getId() + "@" + this.giverOperator.getId() + "@" + this.receiverOperator.getId() + "@" + this.borrowDate + "@" + this.returnDate ;
+        String returnString = this.book.getTitle() + "@" + this.student.getId() ;
+        if(borrowDate !=null){
+            returnString += "@" + this.giverOperator.getId() +"@" + this.borrowDate;
+        }
+        if (realReturnDate != null) {
+            returnString += "@" + this.receiverOperator.getId() +"@" + this.realReturnDate;
+        }
+        return returnString;
     }
 }

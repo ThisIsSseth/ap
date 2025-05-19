@@ -13,7 +13,7 @@ import java.util.Random;
 public class Borrowing {
 
     Borrow borrowABook(Book book, Student student, Map<Integer, Operator> operatorMap) {
-        return new Borrow(student, book, randomOperator(operatorMap));
+        return new Borrow(student, book);
     }
 
     Operator randomOperator(Map<Integer, Operator> operatorMap) {
@@ -23,7 +23,15 @@ public class Borrowing {
         return operatorMap.get(list.get(index));
     }
 
-    void returnABook(Borrow borrow, Map<Integer,Operator> operatorMap) {
-        borrow.returnBook(randomOperator(operatorMap));
+    void returnABook(Borrow borrow, Operator operator   ) {
+        borrow.returnBook(operator);
+    }
+
+    public void confirmBorrow(Operator operator, Borrow borrow) {
+        borrow.confirmByOperator(operator);
+    }
+
+    public void confirmReturn(Operator operator, Borrow borrow) {
+        borrow.confirmByOperator(operator);
     }
 }

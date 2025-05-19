@@ -13,4 +13,5 @@ public class Operator extends Member {
     public String toString() {
         return super.toString() + this.getId() + regex;
     }
+
 }

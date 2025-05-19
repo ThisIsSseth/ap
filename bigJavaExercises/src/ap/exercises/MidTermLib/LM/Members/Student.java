@@ -24,6 +24,8 @@ public class Student extends Member {
         this(firstName, lastName, id, major, LocalDate.now(), pw);
     }
 
+    /**
+     * major@signUpDate@*/
     @Override
     public String toString() {
         return super.toString() + this.major + regex + this.signUpDate + regex;

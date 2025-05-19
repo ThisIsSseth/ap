@@ -8,8 +8,7 @@ public class Main {
         //check for lib files, in lib files there are info of the lib class and the path of its respective class files
         menu.loadMultiLibrariesData();
         //add all found libs to libraryNameList
-        while (true) {
-            menu.LibraryMenu();
+        while (menu.LibraryMenu()) {
             while (menu.signInToLibrary()) {
                 while (menu.userMenu()) {
                 }
