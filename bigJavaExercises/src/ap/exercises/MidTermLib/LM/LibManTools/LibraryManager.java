@@ -3,10 +3,12 @@ package ap.exercises.MidTermLib.LM.LibManTools;
 import ap.exercises.MidTermLib.LM.Book;
 import ap.exercises.MidTermLib.LM.Borrow;
 import ap.exercises.MidTermLib.LM.Library;
+import ap.exercises.MidTermLib.LM.Members.Manager;
 import ap.exercises.MidTermLib.LM.Members.Member;
 import ap.exercises.MidTermLib.LM.Members.Operator;
 import ap.exercises.MidTermLib.LM.Members.Student;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +28,12 @@ public class LibraryManager {
     private Borrowing borrowing = new Borrowing();
     List<Borrow> borrowPending = new ArrayList<>();
 
+
+    public LibraryManager(String libName, Manager manager) {
+        this(new Library(libName), manager);
+        saver = new SingleLibrarySaver(library);
+        saver.loadData();
+    }
 
     public int getRole() {
         switch (role) {
@@ -48,14 +56,10 @@ public class LibraryManager {
         return maxOptions;
     }
 
-    public LibraryManager(String libName) {
-        this(new Library(libName));
-        //load data from file
-    }
-
-    public LibraryManager(Library library) {
+    public LibraryManager(Library library, Manager manager) {
         this.library = library;
         saver = new SingleLibrarySaver(library);
+        library.setManager(manager);
 
     }
 
@@ -132,6 +136,36 @@ public class LibraryManager {
         }
     }
 
+    public void doStudentOption4(String bookName) {
+        Book book = searchBook(bookName);
+        if (book == null) {
+            System.out.println("Book not found.");
+        }
+        for (Borrow b : library.getBorrowList()) {
+            if (b.getBook().getTitle().equals(bookName) && b.getStudent().equals(user)) {
+                b.returnByStudentRequest();
+                System.out.println("Your request is pending.");
+                return;
+            }
+        }
+        System.out.println("Book was not on your borrow list.");
+    }
+
+    public void doStudentOption5() {
+        System.out.println(studentBorrowList());
+    }
+
+    private String studentBorrowList() {
+        String list = "";
+        for (Borrow b : borrowPending) {
+            if(b.getStudent().equals(user)) {
+                list += b.getBook().getTitle() +" | " + b.getStudent().getLastName() + " | " + b.getStudent().getFirstName() + (b.getBorrowDate() == null? "Borrow request is pending." : " | " + b.getBorrowDate()) +
+                        (b.getBorrowDate() == null? "" : " | " + b.getBorrowDate().plusDays(10)) + (b.getRealReturnDate() == null? "" : " | " + b.getRealReturnDate());
+            }
+        }
+        return list;
+    }
+
     String managerMenu() {
         maxOptions = 9;
         return """
@@ -147,6 +181,53 @@ public class LibraryManager {
                 0. Exit
                 """;
     }
+
+    public void doManagerOption3() {
+        System.out.println(showOperators() == "" ? "Nothing to show\n" : showOperators());
+    }
+
+    public void doManagerOption4() {
+        System.out.println(showStudents()== "" ? "Nothing to show\n" : showStudents());
+    }
+
+    public void doManagerOption5() {
+        System.out.println(showBorrows() == "" ? "Nothing to show\n" : showBorrows());
+    }
+
+    public void doManagerOption6() {
+        System.out.println(showOverdues()== "" ? "Nothing to show\n" : showOverdues());
+    }
+
+    public void doManagerOption7(){
+        System.out.println(showTenMostBorrows() == "" ? "Nothing to show\n" : showTenMostBorrows());
+    }
+
+    public void doManagerOption8(int opName){
+        System.out.println(showOpHistory(opName) == "" ? "Nothing to show\n" : showOpHistory(opName));
+    }
+
+    private String showOpHistory(int opId) {
+        String opHistory = "";
+        Operator operator = null;
+        for (Operator op : library.getOperatorMap().values()){
+            if (op.getId() == opId){
+                operator = op;
+                break;
+            }
+        }
+        try {
+            for (Borrow b : library.getBorrowList()) {
+                if (b.getGiverOperator().equals(operator)) {
+                    opHistory += "\n" + operator.getFirstName() + " | " + operator.getLastName() + " | " + operator.getId() +
+                            " | Accepted borrow request:" + b.getBook().getTitle() + ", by "+ b.getStudent().getId();
+                }
+            }
+        }catch (NullPointerException e){
+            System.out.println("Operator not found.");
+        }
+        return opHistory;
+    }
+
 
     public void doManagerOption9(String opFName, String oPLName, int opId) {
         Operator op = new Operator(opFName, oPLName, opId);
@@ -215,10 +296,14 @@ public class LibraryManager {
     }
 
     public void doOperatorOption5_2(int index) {
-        if (index > borrowPending.size())
-            System.out.println("Out of range. Please enter a number between 1 and " + borrowPending.size());
-        else{
-            borrowing.confirmBorrow((Operator) user, borrowPending.get(index - 1 ));
+        if(borrowPending != null) {
+            if (index > borrowPending.size())
+                System.out.println("Out of range. Please enter a number between 1 and " + borrowPending.size());
+            else {
+                borrowing.confirmBorrow((Operator) user, borrowPending.get(index - 1));
+            }
+        }else {
+            System.out.println("Nothing to show");
         }
     }
 
@@ -244,6 +329,7 @@ public class LibraryManager {
         user = null;
         role = null;
         signInSuccess = false;
+        saver.saveData();
         maxOptions = 0;
 
         //sign out
@@ -271,6 +357,61 @@ public class LibraryManager {
         return bookMenu;
     }
 
+    public String showOperators() {
+        String operatorMenu = "";
+        for (Operator op : library.getOperatorMap().values()) {
+            operatorMenu += "\n" + op.getFirstName() + " | " + op.getLastName() + " | " + op.getId();
+        }
+        return operatorMenu;
+    }
+
+    private String showStudents() {
+        String students = "";
+        for (Student s : library.getStudentMap().values()){
+            students += "\n" + s.getFirstName() + " | " + s.getLastName() + " | " + s.getId();
+        }
+        return students;
+    }
+
+    private String showBorrows(){
+        String borrows = "";
+        for (Borrow b : library.getBorrowList()){
+            borrows += b.getBook().getTitle() +" | " + b.getStudent().getLastName() + " | " + b.getStudent().getFirstName() + (b.getBorrowDate() == null? "" : " | " + b.getBorrowDate());
+        }
+        return borrows;
+    }
+
+    private String showOverdues(){
+        String overdues = "";
+        for (Borrow b : library.getBorrowList()){
+            if ( b.getBorrowDate() != null && !b.getBorrowDate().isBefore(LocalDate.now())) {
+                overdues += b.getBook().getTitle() +" | " + b.getStudent().getLastName() + " | " + b.getStudent().getFirstName() + (b.getBorrowDate() == null? "" : " | " + b.getBorrowDate());
+            }
+        }
+        return overdues;
+    }
+
+    private String showTenMostBorrows(){
+        String tenMost = "";
+        for (Borrow b : /*tenMost*/(library.getBorrowList())){
+
+        }
+    return tenMost;
+    }
+
+//    private List<Borrow> tenMost(List<Borrow> list){
+//        int count = 0;
+//        Borrow most;
+//        List<Borrow> tenMost = new ArrayList<>();
+//        for (Borrow b : list){
+//            for (Borrow c : list){
+//                if (b.equals(c)){
+//                    count++;
+//                }
+//            }
+//        }
+//    }
+
     public Book searchBook(String bookName) {
 //        for (Book b : library.getBookList()) {
 //            if (b.getTitle().equals(bookName)) {
@@ -296,6 +437,8 @@ public class LibraryManager {
         }
     }
 
+
+    /**This one is for the use of op*/
     public void returningBook(String bookName) {
         for (Borrow borrow : library.getBorrowList()) {
             if (borrow.getBook().getTitle().equals(bookName) && borrow.getStudent().equals(user) && user instanceof Operator) {

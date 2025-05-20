@@ -32,8 +32,4 @@ public class DefaultCreator {
         library.getBookList().add(book03);
         library.setManager(manager);
     }
-
-
-
-
 }

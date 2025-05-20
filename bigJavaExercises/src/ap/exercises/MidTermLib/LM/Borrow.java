@@ -13,6 +13,7 @@ public class Borrow {
     private LocalDate borrowDate;
     private LocalDate returnDate;
     private LocalDate realReturnDate;
+    private boolean returnPending = false;
 
 
     public Borrow(Student student, Book book) {
@@ -27,6 +28,16 @@ public class Borrow {
 
     public Book getBook() {
         return book;
+    }
+
+
+
+    public LocalDate getBorrowDate() {
+        return borrowDate;
+    }
+
+    public LocalDate getRealReturnDate() {
+        return realReturnDate;
     }
 
     public Operator getGiverOperator() {
@@ -44,6 +55,10 @@ public class Borrow {
             this.receiverOperator = operator;
             this.realReturnDate = LocalDate.now();
         }
+    }
+
+    public void returnByStudentRequest(){
+        returnPending = true;
     }
 
     public void recreationOfBorrow(Operator giverOperator, LocalDate borrowDate) {

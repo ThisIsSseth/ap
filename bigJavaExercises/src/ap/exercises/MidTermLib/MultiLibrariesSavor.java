@@ -22,5 +22,4 @@ public class MultiLibrariesSavor {
         libNameList.removeIf(String::isBlank);
         return libNameList.isEmpty() ? new ArrayList<>() : libNameList;
     }
-
 }

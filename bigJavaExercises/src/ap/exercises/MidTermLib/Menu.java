@@ -3,6 +3,7 @@ package ap.exercises.MidTermLib;
 import ap.exercises.MidTermLib.LM.Book;
 import ap.exercises.MidTermLib.LM.DefaultCreator;
 import ap.exercises.MidTermLib.LM.LibManTools.LibraryManager;
+import ap.exercises.MidTermLib.LM.Members.Manager;
 import ap.exercises.MidTermLib.LM.Members.Student;
 
 import java.util.ArrayList;
@@ -25,23 +26,25 @@ public class Menu {
      */
     public boolean LibraryMenu() {
         if (libraryNameList != null && !libraryNameList.isEmpty()) {
-            System.out.println("Choose a Library or enter 0 to exit:");
+            System.out.println("--------\nChoose a Library or enter 0 to exit:");
             int indexOfLibrary = 1;
             for (String libraryName : libraryNameList) {
-                System.out.println(indexOfLibrary + ") " + libraryName);
+                System.out.println(indexOfLibrary + ") " + libraryName.split("@")[0]);
                 indexOfLibrary++;
             }
             indexOfLibrary = inputReader.readInt(0, libraryNameList.size());
             if (indexOfLibrary == 0) {
                 return false;
             }
-            currentLibraryName = libraryNameList.get(indexOfLibrary - 1);
-            libraryManager = new LibraryManager(currentLibraryName);
+            String[] b = libraryNameList.get(indexOfLibrary - 1).split("@");
+            currentLibraryName = b[0];
+            Manager manager = new Manager(b[1], b[2], Integer.parseInt(b[3]), b[4]);
+            libraryManager = new LibraryManager(currentLibraryName, defaultCreator.defaultLibrary().getManager());
         } else {
             System.out.println("No Valid library found. Entering default library...");
-            currentLibraryName = defaultCreator.defaultLibrary().getLibName();
+            currentLibraryName = defaultCreator.defaultLibrary().getLibName() + "@" + defaultCreator.defaultLibrary().getManager()    ;
             libraryNameList.add(currentLibraryName);
-            libraryManager = new LibraryManager(defaultCreator.defaultLibrary());
+            libraryManager = new LibraryManager(defaultCreator.defaultLibrary(), defaultCreator.defaultLibrary().getManager());
         }
         return true;
     }
@@ -147,7 +150,7 @@ public class Menu {
     }
 
     void commonUserMenu() {
-        System.out.println("Welcome " + libraryManager.getUserName() + "\n"+
+        System.out.println("\n~~~\nWelcome " + libraryManager.getUserName() + "\n"+
                 libraryManager.getUserMenu() + "\nChoose an option: ");
     }
 
@@ -186,12 +189,13 @@ public class Menu {
             }
             case 5 -> {
                 int maxSize = libraryManager.doOperatorOption5_1();
-                int option1 = 0;
-                System.out.println("Enter the index, -1 to exit: ");
-                while (option1 >= 0) {
-                    option1 = inputReader.readInt(1, maxSize);
+                int option1 = Integer.MAX_VALUE;
+                System.out.println("Enter the index, 0 to exit: ");
+                option1 = inputReader.readInt(0, maxSize);
+                while (option1 > 0) {
                     libraryManager.doOperatorOption5_2(option1);
-                    System.out.println("Enter the next index or -1 to exit: ");
+                    System.out.println("Enter the next index or 0 to exit: ");
+                    option1 = inputReader.readInt(0, maxSize);
                 }
             }
 
@@ -217,6 +221,15 @@ public class Menu {
                 libraryManager.doStudentOption2(bookName);
             }
 
+            case 3 -> {libraryManager.doManagerOption3();}
+
+            case 4 -> {libraryManager.doManagerOption4();}
+
+            case 5 ->{libraryManager.doManagerOption5();}
+
+            case 6 -> {libraryManager.doManagerOption6();}
+
+            case 7 -> {}
 
 
             case 9 -> {
@@ -253,12 +266,13 @@ public class Menu {
                 libraryManager.doStudentOption3(bookName);
             }
             case 4 -> {
+                System.out.println("Enter the name of the book you want to return: ");
+                String bookName = inputReader.readString();
+                libraryManager.doStudentOption4(bookName);
 
             }
             case 5 -> {
-                System.out.println("Enter the name of the book you want to return: ");
-                String bookName = inputReader.readString();
-                libraryManager.returningBook(bookName);
+                libraryManager.doStudentOption5();
             }
             case 0 -> {
                 exit();

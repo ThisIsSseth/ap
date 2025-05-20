@@ -64,6 +64,7 @@ public class SingleLibrarySaver {
     }
 
     public void saveData() {
+        //saves data to file
         studenMapSaver.writeInto(studentListToStringFormater());
         bookListSaver.writeInto(bookListToStringFormater());
         operatorMapSaver.writeInto(operatorListToStringFormater());
@@ -72,11 +73,13 @@ public class SingleLibrarySaver {
     }
 
     public void loadData() {
+        //reads from file
         library.getStudentMap().clear();
         library.getBookList().clear();
         library.getOperatorMap().clear();
         library.getBorrowList().clear();
 
+        //converts List of strings to list of objects and adds the objects directly to library lists
         loadAndConvertToBook(library.getBookList());
         loadAndConvertToOperator(library.getOperatorMap());
         loadAndConvertToStudent(library.getStudentMap());
@@ -150,7 +153,4 @@ public class SingleLibrarySaver {
         } catch (Exception e){}
         return borrow;
     }
-
 }
-
-
