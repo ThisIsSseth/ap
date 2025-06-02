@@ -56,6 +56,7 @@ public class HtmlAnalyzer {
                 .flatMap(s -> s.stream())
                 .map(s -> HtmlParser.getFirstSrc(s))
                 .filter(Objects::nonNull)
+                .distinct()
                 .collect(Collectors.toList());
         return imageUrls;
     }
