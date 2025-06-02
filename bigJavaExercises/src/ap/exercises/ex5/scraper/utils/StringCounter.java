@@ -1,6 +1,7 @@
 package ap.exercises.ex5.scraper.utils;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,8 +21,9 @@ public class StringCounter {
 
     public List<StringCountHolder> getTop(int k) {
         return stringCountHolder.stream()
-                .sorted((a, b) -> Long.compare(a.getCount(), b.getCount()))
-                .limit(k).toList();
+                .sorted(Comparator.comparingLong(StringCountHolder::getCount))
+                .limit(k)
+                .toList();
 
     }
 }

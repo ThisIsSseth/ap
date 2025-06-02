@@ -7,9 +7,7 @@ import ap.exercises.ex5.scraper.utils.DirectoryTools;
 import ap.exercises.ex5.scraper.utils.ObjectCounter;
 import ap.exercises.ex5.scraper.utils.FileTools;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class HtmlAnalyzer {
@@ -27,7 +25,7 @@ public class HtmlAnalyzer {
         return urls;
     }
 
-    public static List<String> getTopUrls(int k){
+    public static List<String> getTopUrls(int k) {
         Map<String, Long> urlCount = getAllUrls().stream()
                 .collect(Collectors.groupingBy(
                         s -> s,
@@ -42,13 +40,26 @@ public class HtmlAnalyzer {
 
         return topUrls;
     }
-    public static void printTopCountUrls(int k){
-        ObjectCounter<String> urlCounter=new ObjectCounter<>();
+
+    public static void printTopCountUrls(int k) {
+        ObjectCounter<String> urlCounter = new ObjectCounter<>();
         getAllUrls().forEach(s -> urlCounter.add(s));
         for (Map.Entry<String, Integer> urlCountEntry : urlCounter.getTop(k)) {
-            System.out.println(urlCountEntry.getKey()+" -> "+urlCountEntry.getValue());
+            System.out.println(urlCountEntry.getKey() + " -> " + urlCountEntry.getValue());
         }
     }
+
+    public static List<String> getAllImageUrls() {
+        List<String> imageUrls = fileList.stream()
+                .map(fileAddress -> FileTools.getTextFileLines(fileAddress))
+                .filter(s -> s != null)
+                .flatMap(s -> s.stream())
+                .map(s -> HtmlParser.getFirstSrc(s))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        return imageUrls;
+    }
+
 
     public static void main(String[] args) {
 
@@ -56,6 +67,8 @@ public class HtmlAnalyzer {
 
         System.out.println("____________________");
         HtmlAnalyzer.getTopUrls(10).forEach(s -> System.out.println(s));
+
+        HtmlAnalyzer.getAllImageUrls().forEach(s -> System.out.println(s));
 
     }
 }

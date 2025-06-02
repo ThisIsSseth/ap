@@ -39,4 +39,31 @@ public class HtmlParser {
     public static List<String> getAllUrlsFromList(List<String> htmlLines) throws IOException {
         return getAllUrlsFromHtmlLinesStream(htmlLines.stream());
     }
+
+    public static String getFirstSrc (String htmlLine) {
+        String src = null;
+        if (htmlLine.contains(".png")) {
+            int endIndex = htmlLine.indexOf(".png") + 4;
+            int startIndex = htmlLine.indexOf("\"") < endIndex ? htmlLine.indexOf("\"")+1 : 0;
+            src = htmlLine.substring(startIndex, endIndex);
+        }
+        if (htmlLine.contains(".jpg")) {
+            int endIndex = htmlLine.indexOf(".jpg") + 4;
+            int startIndex = htmlLine.indexOf("\"") < endIndex ? htmlLine.indexOf("\"") +1 : 0;
+            src = htmlLine.substring(startIndex, endIndex);
+        }
+        return src;
+
+    }
+    public static List<String> getAllSrcFromHtmlLinesStream(Stream<String> htmlLinesStream) throws IOException {
+        List<String> srcs = htmlLinesStream
+                .map( line -> getFirstSrc(line))
+                .collect(Collectors.toList());
+        return srcs;
+    }
 }
+
+
+// I should add a simple method somewhere to just filter the urls with png and jpg at the end and put them all in a list
+// where?
+//
