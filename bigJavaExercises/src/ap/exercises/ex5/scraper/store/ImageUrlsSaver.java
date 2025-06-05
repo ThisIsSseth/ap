@@ -10,7 +10,7 @@ import java.util.List;
 public class ImageUrlsSaver {
 
     public static boolean saveImageUrls(List<String> imageUrls) {
-        try(PrintWriter out = new PrintWriter(Conf.IMAGE_URLS_SAVE_FILE)) {
+        try (PrintWriter out = new PrintWriter(Conf.IMAGE_URLS_SAVE_FILE)) {
             for (String imageUrl : imageUrls) {
                 out.println(imageUrl);
             }

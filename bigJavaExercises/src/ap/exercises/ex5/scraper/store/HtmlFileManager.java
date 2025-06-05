@@ -1,14 +1,16 @@
 package ap.exercises.ex5.scraper.store;
 
+import ap.exercises.ex5.scraper.parser.HtmlDirectoryComposer;
 import ap.exercises.ex5.scraper.utils.DirectoryTools;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.util.List;
 
 public class HtmlFileManager {
 
     private String saveFileBasePath;
-    private static int saveCounter=0;
+    private static int saveCounter = 0;
 
     public HtmlFileManager(String saveFileBasePath) {
 //        this.saveFileBasePath = DirectoryTools.createDirectoryWithTimeStamp(saveFileBasePath);
@@ -17,9 +19,10 @@ public class HtmlFileManager {
         DirectoryTools.createDirectory(saveFileBasePath);
     }
 
-    public void save(List<String> lines) {
+    public void save(List<String> lines, String htmlName) {
         try {
-            String saveHtmlFileAddress = getSaveHtmlFileAddress();
+            String saveHtmlFileAddress = getSaveHtmlFileAddress(htmlName);
+            DirectoryTools.createDirectory(new File(saveHtmlFileAddress).getParent());
             PrintWriter out = new PrintWriter(saveHtmlFileAddress);
             for (String line : lines) {
                 out.println(line);
@@ -27,13 +30,20 @@ public class HtmlFileManager {
             out.close();
 
             System.out.println("save counter: " + saveCounter);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("save failed: " + e.getMessage());
         }
+
     }
 
-    public String getSaveHtmlFileAddress(){
+    public void save(List<String> lines) {
+        save(lines, "");
+    }
+
+
+    public String getSaveHtmlFileAddress(String htmlName) {
+        String p = htmlName.isEmpty() ? "" : htmlName;
         saveCounter++;
-        return saveFileBasePath +"/"+ saveCounter;
+        return saveFileBasePath + p + "/" + saveCounter;
     }
 }

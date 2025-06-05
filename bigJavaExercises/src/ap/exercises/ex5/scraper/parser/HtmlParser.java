@@ -61,9 +61,11 @@ public class HtmlParser {
                 .collect(Collectors.toList());
         return srcs;
     }
+
+    public static List<String> getAllDomainSpecificUrlsFromList(List<String> htmlLines) throws IOException {
+        List<String> urls = getAllUrlsFromList(htmlLines).stream()
+                .filter(s -> s.contains("znu"))
+                .toList();
+        return urls;
+    }
 }
-
-
-// I should add a simple method somewhere to just filter the urls with png and jpg at the end and put them all in a list
-// where?
-//

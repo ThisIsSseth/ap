@@ -61,6 +61,29 @@ public class HtmlAnalyzer {
         return imageUrls;
     }
 
+    public static List<String> getSpecificDomainUrls(){
+        List<String> znuDomainUrls = getAllUrls().stream()
+                .filter(s -> s.contains("znu"))
+                .toList();
+        return znuDomainUrls;
+    }
+
+    public static List<String> getTopSpecificDomainUrls(int k){
+        Map<String, Long> urlCount = getSpecificDomainUrls().stream()
+                .collect(Collectors.groupingBy(
+                        s -> s,
+                        Collectors.counting()
+                ));
+
+        List<String> topUrls = urlCount.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .limit(k)
+                .map(s -> s.getKey())
+                .collect(Collectors.toList());
+
+        return topUrls;
+    }
+
 
     public static void main(String[] args) {
 
@@ -69,7 +92,9 @@ public class HtmlAnalyzer {
         System.out.println("____________________");
         HtmlAnalyzer.getTopUrls(10).forEach(s -> System.out.println(s));
 
-        HtmlAnalyzer.getAllImageUrls().forEach(s -> System.out.println(s));
+        HtmlAnalyzer.getSpecificDomainUrls().forEach(s -> System.out.println(s));
+
+//        HtmlAnalyzer.getAllImageUrls().forEach(s -> System.out.println(s));
 
     }
 }
