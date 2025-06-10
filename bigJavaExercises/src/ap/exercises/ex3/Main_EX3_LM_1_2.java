@@ -192,7 +192,7 @@ public class Main_EX3_LM_1_2 {
 //                    System.out.println("File is not empty.\nSaving file content...");
 //                    if(backup()){
 //                        System.out.println("Backup complete.\nProceeding with data saving...");
-//                        writeInto(content);
+//                        appendInto(content);
 //                    }
 
                 }

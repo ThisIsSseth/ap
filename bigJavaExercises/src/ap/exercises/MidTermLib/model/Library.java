@@ -1,6 +1,6 @@
-package ap.exercises.MidTermLib.LM;
+package ap.exercises.MidTermLib.model;
 
-import ap.exercises.MidTermLib.LM.Members.*;
+import ap.exercises.MidTermLib.LM.Borrow;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,8 +11,8 @@ public class Library {
     private Manager manager;
     private String libName;
     private List<Book> bookList = new ArrayList<>();
-    private Map<Integer,Student> studentMap = new HashMap<>();
-    private Map<Integer,Operator> operatorMap = new HashMap<>();
+    private Map<Integer, Student> studentMap = new HashMap<>();
+    private Map<Integer, Operator> operatorMap = new HashMap<>();
     private List<Borrow> borrowList = new ArrayList<>();
 
     public Library (String libName, Manager manager){

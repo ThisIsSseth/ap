@@ -1,7 +1,5 @@
 package ap.exercises;
 
-import ap.exercises.MidTermLib.LM.Library;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +38,7 @@ class Pen extends Product {
         this.brand = brand;
     }
 
+    @Override
     public String toString() {
         return ("{Color: " + color + ", Price: " + price + ", Brand: " + brand + "}");
     }
@@ -56,6 +55,7 @@ class Book extends Product {
         this.price = price;
     }
 
+    @Override
     public String toString() {
         return ("{Name: " + name + ", Price: " + getPrice() + "}");
     }

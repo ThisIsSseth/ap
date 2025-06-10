@@ -1,10 +1,11 @@
 package ap.exercises.ex3;
 
+
 import java.io.File;
 import java.util.*;
 
 public class Main_EX3_LM_1_3 {
-    static List<Integer> studentId = new ArrayList<>();
+    public static List<Integer> studentId = new ArrayList<>();
 
     private static void main(String[] args) {
         final String title1 = "Big Java", title2 = "Cooking Book", author1 = "Jack Bauer", author2 = "Gordon Ramsey", firstName1 = "Naghi", lastName1 = "Mamooli", major1 = "Athletics", firstName2 = "Rahmat", lastName2 = "Hezar Jarib ", major2 = "Biology";
@@ -133,6 +134,7 @@ public class Main_EX3_LM_1_3 {
         String[] s = line.split(",");
         return new Student(s[0], s[1], Integer.parseInt(s[2]), s[3]);
     }
+
     static Book bookStringToObj(String line) {
         String[] s = line.split(",");
         return new Book(s[0], s[1], Integer.parseInt(s[2]), Integer.parseInt(s[3]));
@@ -144,6 +146,7 @@ public class Main_EX3_LM_1_3 {
         }
         return false;
     }
+
     static int searchByName(String firstName, Student[] stdArr){
         for (Student a : stdArr){
             if (a.getFirstName().equals(firstName)){

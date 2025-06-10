@@ -1,6 +1,6 @@
 package ap.exercises.MidTermLib;
 
-public class Main {
+class Main {
     public static void main(String[] args) {
         Menu menu = new Menu();
 

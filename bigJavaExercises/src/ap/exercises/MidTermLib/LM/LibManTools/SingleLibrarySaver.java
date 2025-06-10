@@ -1,16 +1,14 @@
 package ap.exercises.MidTermLib.LM.LibManTools;
 
-import ap.exercises.MidTermLib.LM.Book;
+import ap.exercises.MidTermLib.model.Book;
 import ap.exercises.MidTermLib.LM.Borrow;
-import ap.exercises.MidTermLib.LM.Library;
-import ap.exercises.MidTermLib.LM.Members.Member;
-import ap.exercises.MidTermLib.LM.Members.Operator;
-import ap.exercises.MidTermLib.LM.Members.Student;
+import ap.exercises.MidTermLib.model.Library;
+import ap.exercises.MidTermLib.model.Member;
+import ap.exercises.MidTermLib.model.Operator;
+import ap.exercises.MidTermLib.model.Student;
 import ap.exercises.MidTermLib.LM.Saver;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

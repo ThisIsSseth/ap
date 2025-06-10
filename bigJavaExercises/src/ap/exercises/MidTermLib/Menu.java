@@ -1,17 +1,16 @@
 package ap.exercises.MidTermLib;
 
-import ap.exercises.MidTermLib.LM.Book;
 import ap.exercises.MidTermLib.LM.DefaultCreator;
 import ap.exercises.MidTermLib.LM.LibManTools.LibraryManager;
-import ap.exercises.MidTermLib.LM.Members.Manager;
-import ap.exercises.MidTermLib.LM.Members.Student;
+import ap.exercises.MidTermLib.model.Manager;
+import ap.exercises.MidTermLib.model.Student;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Menu {
+ class Menu {
     private InputReader inputReader = new InputReader();
-    private MultiLibrariesSavor libsSaver = new MultiLibrariesSavor();
+    private MultiLibrariesSaver libsSaver = new MultiLibrariesSaver();
     private List<String> libraryNameList = new ArrayList<>();
     private String currentLibraryName;
     private LibraryManager libraryManager;

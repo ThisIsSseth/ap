@@ -1,7 +1,9 @@
 package ap.exercises.MidTermLib.LM;
 
-import ap.exercises.MidTermLib.LM.Members.Manager;
-import ap.exercises.MidTermLib.LM.Members.Student;
+import ap.exercises.MidTermLib.model.Book;
+import ap.exercises.MidTermLib.model.Library;
+import ap.exercises.MidTermLib.model.Manager;
+import ap.exercises.MidTermLib.model.Student;
 
 public class DefaultCreator {
 

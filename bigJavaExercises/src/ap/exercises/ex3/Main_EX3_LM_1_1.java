@@ -1,5 +1,6 @@
 package ap.exercises.ex3;
 
+
 public class Main_EX3_LM_1_1 {
     public static void main(String[] args) {
         final String title1 = "Big Java", title2 = "Cooking Book", author1 = "Jack Bauer", author2 = "Gordon Ramsey", Publisher1 = "P1" ,

@@ -1,4 +1,4 @@
-package ap.exercises.MidTermLib.LM.Members;
+package ap.exercises.librarysystem2.model;
 
 public class Manager extends Member {
     private String education;

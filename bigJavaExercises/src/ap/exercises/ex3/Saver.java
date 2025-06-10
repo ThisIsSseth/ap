@@ -37,7 +37,7 @@ class Saver {
 //                    System.out.println("File is not empty.\nSaving file content...");
 //                    if(backup()){
 //                        System.out.println("Backup complete.\nProceeding with data saving...");
-//                        writeInto(content);
+//                        appendInto(content);
 //                    }
 
         } catch (IOException ex) {

@@ -1,9 +1,9 @@
 package ap.exercises.MidTermLib.LM.LibManTools;
 
-import ap.exercises.MidTermLib.LM.Book;
+import ap.exercises.MidTermLib.model.Book;
 import ap.exercises.MidTermLib.LM.Borrow;
-import ap.exercises.MidTermLib.LM.Members.Operator;
-import ap.exercises.MidTermLib.LM.Members.Student;
+import ap.exercises.MidTermLib.model.Operator;
+import ap.exercises.MidTermLib.model.Student;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package ap.exercises.MidTermLib;
+package ap.exercises.librarysystem2.utils;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -6,6 +6,7 @@ import java.util.Scanner;
 class InputReader {
     Scanner sc = new Scanner(System.in);
 
+    /**gets an {@code int} between min and max*/
     public int readInt(int min, int max) {
         int input = Integer.MIN_VALUE;
         try {
@@ -22,32 +23,35 @@ class InputReader {
         return input;
     }
 
-    public int readPassword() {
+
+    public int readPassword(int numberOfDigits) {
+        int Min = (int) (Math.pow(10, numberOfDigits));
         int input = 0;
         try {
             do {
                 input = sc.nextInt();
-                if (input < 1000 || input > 9999) {
+                if (input < Min || input >= Min*10) {
                     System.out.println("Please enter a number between 1000 and 9999");
                 }
 
-            } while (input < 1000 || input > 9999);
+            } while (input < Min || input >= Min*10);
         } catch (InputMismatchException e) {
             System.out.println("Invalid input!");
         }
         return input;
     }
 
-    public int readID() {
+    public int readID(int numberOfDigits) {
+        int Min = (int) (Math.pow(10, numberOfDigits));
         int input = 0;
         try {
             do {
                 input = sc.nextInt();
-                if (input < 10000 || input > 99999) {
+                if (input < Min || input > Min*10) {
                     System.out.println("Please enter a number between 10000 and 99999");
                 }
 
-            } while (input < 10000 || input > 99999);
+            } while (input < Min || input > Min*10);
         } catch (InputMismatchException e) {
             System.out.println("Invalid input!");
         }
@@ -56,7 +60,7 @@ class InputReader {
 
     public String readString() {
         String input = "";
-        while (input == "") {
+        while (input.trim().isEmpty()) {
             try {
                 input = sc.nextLine();
             } catch (Exception e) {

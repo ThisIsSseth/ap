@@ -1,4 +1,4 @@
-package ap.exercises.MidTermLib.LM;
+package ap.exercises.librarysystem2.model;
 
 import ap.exercises.MidTermLib.model.Book;
 import ap.exercises.MidTermLib.model.Operator;

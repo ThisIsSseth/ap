@@ -1,4 +1,4 @@
-package ap.exercises.MidTermLib.LM;
+package ap.exercises.librarysystem2.model;
 
 public class Book {
 
@@ -44,12 +44,12 @@ public class Book {
 
     public int getCopies() {return copies;}
 
-    /**
-     * substitutes one from the copies */
+    /**substitutes one from the copies */
     public void substituteCopyByOne() {
         copies--;
     }
 
+    /**adds one to the number of copies*/
     public void addCopyByOne() {
         copies++;
     }

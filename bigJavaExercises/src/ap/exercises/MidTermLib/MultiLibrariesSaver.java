@@ -5,7 +5,7 @@ import ap.exercises.MidTermLib.LM.Saver;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MultiLibrariesSavor {
+class MultiLibrariesSaver {
     Saver libListSaver = new Saver("LibraryList");
 
     public void save(String libNames) {

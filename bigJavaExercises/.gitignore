@@ -6,4 +6,13 @@ lib/
 README.md
 bigJavaExercises.iml
 misc.xml
-
+book.txt
+book1.txt
+student.txt
+student1.txt
+fetched_html/
+default LibraryStudents.txt
+default LibraryBooks.txt
+default LibraryBorrowers.txt
+default LibraryOperators.txt
+LibraryList.txt

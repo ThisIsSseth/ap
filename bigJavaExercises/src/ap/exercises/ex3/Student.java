@@ -2,7 +2,7 @@ package ap.exercises.ex3;
 
 import static ap.exercises.ex3.Main_EX3_LM_1_3.studentId;
 
-public  class Student {
+class Student {
 
     private String firstName;
     private String lastName;
