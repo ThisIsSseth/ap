@@ -9,11 +9,12 @@ public class Member {
     private String lastName;
     private int id;
     private int pw;
-    protected String regex = "@";
+//    protected String regex = "@";
 
     /**
-     * @param  id a number between 10000 and 99999
-     * @param  pw a number between 1000 and 9999*/
+     * @param id a number between 10000 and 99999
+     * @param pw a number between 1000 and 9999
+     */
     public Member(String firstName, String lastName, int id, int pw) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -21,9 +22,9 @@ public class Member {
         this.pw = pw;
     }
 
-    public String getRegex(){
-        return regex;
-    }
+//    public String getRegex() {
+//        return regex;
+//    }
 
     public String getFirstName() {
         return firstName;
@@ -49,16 +50,20 @@ public class Member {
         return pw == password;
     }
 
-    protected int getPw() {
+    public int getPw() {
         return pw;
     }
 
-
-    /**
-     * firstName@LastName@ID@PW@*/
-    @Override
-    public String toString() {
-        return firstName + regex + lastName + regex + id + regex + pw + regex;
+    public void setPw(int pw) {
+        this.pw = pw;
     }
+
+
+//    /**
+//     * firstName@LastName@ID@PW@*/
+//    @Override
+//    public String toString() {
+//        return firstName + regex + lastName + regex + id + regex + pw + regex;
+//    }
 
 }

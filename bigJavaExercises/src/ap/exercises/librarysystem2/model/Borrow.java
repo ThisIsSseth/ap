@@ -1,20 +1,16 @@
 package ap.exercises.librarysystem2.model;
 
-import ap.exercises.MidTermLib.model.Book;
-import ap.exercises.MidTermLib.model.Operator;
-import ap.exercises.MidTermLib.model.Student;
-
 import java.time.LocalDate;
 
 public class Borrow {
     private Student student;
     private Book book;
-    private Operator giverOperator;
-    private Operator receiverOperator;
+    private Operator giverOperator = null;
+    private Operator receiverOperator = null;
     private LocalDate borrowDate;
     private LocalDate returnDate;
     private LocalDate realReturnDate;
-    private boolean returnPending = false;
+//    private boolean returnPending = false;
 
 
     public Borrow(Student student, Book book) {
@@ -45,6 +41,11 @@ public class Borrow {
         return giverOperator;
     }
 
+    public Operator getReceiverOperator() {
+        return receiverOperator;
+    }
+
+
     /**
      * Borrow or Return confirm*/
     public void confirmByOperator(Operator operator) {
@@ -58,9 +59,9 @@ public class Borrow {
         }
     }
 
-    public void returnByStudentRequest(){
-        returnPending = true;
-    }
+//    public void returnByStudentRequest(){
+//        returnPending = true;
+//    }
 
     public void recreationOfBorrow(Operator giverOperator, LocalDate borrowDate) {
         this.giverOperator = giverOperator;

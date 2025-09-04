@@ -4,16 +4,16 @@ public class Manager extends Member {
     private String education;
 
     /**
-     *  @param id a number between 10000 and 99999*/
-    public Manager(String firstName, String lastName, int id, String education) {
-        super(firstName, lastName, id, 9999);
+     *  @param id is a 5 digits number*/
+    public Manager(String firstName, String lastName, int id, int pw, String education) {
+        super(firstName, lastName, id, pw);
         this.education = education;
     }
 
-    @Override
-    public String toString() {
-        return super.toString() + this.education + regex;
-    }
+//    @Override
+//    public String toString() {
+//        return super.toString() + this.education + regex;
+//    }
 
     public String getEducation() {
         return education;

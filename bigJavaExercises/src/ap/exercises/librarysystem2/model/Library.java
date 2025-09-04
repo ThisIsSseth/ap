@@ -1,41 +1,44 @@
 package ap.exercises.librarysystem2.model;
 
-import ap.exercises.MidTermLib.LM.Borrow;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Library {
+    private String libraryName;
     private Manager manager;
-    private String libName;
     private List<Book> bookList = new ArrayList<>();
     private Map<Integer, Student> studentMap = new HashMap<>();
+    private Map<Integer, Student> studentPendingSignUpMap = new HashMap<>();
     private Map<Integer, Operator> operatorMap = new HashMap<>();
     private List<Borrow> borrowList = new ArrayList<>();
 
-    public Library (String libName, Manager manager){
-        this(libName);
+
+    //for intial constructing
+    public Library(String libName, Manager manager) {
+        this.libraryName = libName;
         this.manager = manager;
     }
 
-    public Library(String libName) {
-        this.libName = libName;
-        operatorMap.put(10001, new Operator("OP01", "OP", 10001));
-        operatorMap.put(10002, new Operator("OP02", "OP", 10002));
-
-    }
+//    //for initial constructing w/ OPs
+//    public Library(String libName) {
+//        this.libraryName = libName;
+//        operatorMap.put(10001, new Operator("OP01", "OP", 10001));
+//        operatorMap.put(10002, new Operator("OP02", "OP", 10002));
+//
+//    }
 
     public void setManager(Manager manager) {
-        this.manager = new Manager(manager.getFirstName(), manager.getLastName(), manager.getId(), manager.getEducation());
-    }
-    public Manager getManager() {
-        return new Manager(manager.getFirstName(), manager.getLastName(), manager.getId(), manager.getEducation());
+        this.manager = new Manager(manager.getFirstName(), manager.getLastName(), manager.getId(),manager.getPw(), manager.getEducation());
     }
 
-    public String getLibName() {
-        return libName;
+    public Manager getManager() {
+        return new Manager(manager.getFirstName(), manager.getLastName(), manager.getId(),manager.getPw(), manager.getEducation());
+    }
+
+    public String getLibraryName() {
+        return libraryName;
     }
 
     public boolean managerPasswordCheck(int password) {
@@ -58,9 +61,17 @@ public class Library {
         return borrowList;
     }
 
-    @Override
-    public String toString() {
-        return this.libName + "*" ;
+    public Map<Integer, Student> getStudentPendingSignUpMap() {
+        return studentPendingSignUpMap;
     }
+
+    public void setStudentPendingSignUpMap(Map<Integer, Student> studentPendingSignUpMap) {
+        this.studentPendingSignUpMap = studentPendingSignUpMap;
+    }
+
+//    @Override
+//    public String toString() {
+//        return this.libraryName + "*";
+//    }
 
 }
