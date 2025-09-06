@@ -50,6 +50,11 @@ public class LibraryManager {
     public void deactivateStudent(int ID){
         studentCollection.getStudent(ID).setStatus(false);
     }
+
+    public void changePW(int newPW, Operator operator){
+        operator.setPw(newPW);
+    }
+
     
 
 
