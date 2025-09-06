@@ -5,29 +5,37 @@ import java.time.LocalDate;
 public class Borrow {
     private Student student;
     private Book book;
+
     private Operator giverOperator = null;
     private Operator receiverOperator = null;
+
     private LocalDate borrowDate;
+    private int STDBorrowTimeInterval = 5;
     private LocalDate returnDate;
     private LocalDate realReturnDate;
-//    private boolean returnPending = false;
-
 
     public Borrow(Student student, Book book) {
         this.student = student;
         this.book = book;
     }
 
+
+    public void approveBorrowRequest(Operator operator) {
+        this.giverOperator = operator;
+        book.substituteCopyByOne();
+        this.borrowDate = LocalDate.now();
+        this.returnDate = borrowDate.plusDays(STDBorrowTimeInterval);
+    }
+
     public void returnBook(Operator operator) {
         this.realReturnDate = LocalDate.now();
+        book.addCopyByOne();
         this.receiverOperator = operator;
     }
 
     public Book getBook() {
         return book;
     }
-
-
 
     public LocalDate getBorrowDate() {
         return borrowDate;
@@ -45,50 +53,22 @@ public class Borrow {
         return receiverOperator;
     }
 
-
-    /**
-     * Borrow or Return confirm*/
-    public void confirmByOperator(Operator operator) {
-        if(giverOperator == null) {
-            this.giverOperator = operator;
-            this.borrowDate = LocalDate.now();
-            this.returnDate = borrowDate.plusDays(10);
-        } else if (receiverOperator == null) {
-            this.receiverOperator = operator;
-            this.realReturnDate = LocalDate.now();
-        }
-    }
-
-//    public void returnByStudentRequest(){
-//        returnPending = true;
-//    }
-
-    public void recreationOfBorrow(Operator giverOperator, LocalDate borrowDate) {
-        this.giverOperator = giverOperator;
-        this.borrowDate = borrowDate;
-    }
-
-    public void recreationOfBorrow(Operator giverOperator, LocalDate borrowDate, Operator receiverOperator, LocalDate realReturnDate) {
-        recreationOfBorrow(giverOperator, borrowDate);
-        this.receiverOperator = receiverOperator;
-        this.realReturnDate = realReturnDate;
-    }
-
     public Student getStudent() {
         return student;
     }
 
-    /**
-     * Order: "book title@student id@giverOP id@borrowDate@receiverOp id@returnDate" */
-    @Override
-    public String toString() {
-        String returnString = this.book.getTitle() + "@" + this.student.getId() ;
-        if(borrowDate !=null){
-            returnString += "@" + this.giverOperator.getId() +"@" + this.borrowDate;
-        }
-        if (realReturnDate != null) {
-            returnString += "@" + this.receiverOperator.getId() +"@" + this.realReturnDate;
-        }
-        return returnString;
-    }
 }
+
+
+//    /**
+//     * Borrow or Return confirm*/
+//    public void confirmByOperator(Operator operator) {
+//        if(giverOperator == null) {
+//            this.giverOperator = operator;
+//            this.borrowDate = LocalDate.now();
+//            this.returnDate = borrowDate.plusDays(10);
+//        } else if (receiverOperator == null) {
+//            this.receiverOperator = operator;
+//            this.realReturnDate = LocalDate.now();
+//        }
+//    }
