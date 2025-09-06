@@ -43,6 +43,13 @@ public class LibraryManager {
             borrowCollection.approveBorrowRequest(operator, studentCollection.getStudent(ID), bookCollection.findBookByTitle(title));
         }
     }
+
+    public void activateStudent(int ID){
+        studentCollection.getStudent(ID).setStatus(true);
+    }
+    public void deactivateStudent(int ID){
+        studentCollection.getStudent(ID).setStatus(false);
+    }
     
 
 
