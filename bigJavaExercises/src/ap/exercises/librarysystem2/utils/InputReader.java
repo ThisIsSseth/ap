@@ -3,7 +3,7 @@ package ap.exercises.librarysystem2.utils;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-class InputReader {
+public class InputReader {
     Scanner sc = new Scanner(System.in);
 
     /**gets an {@code int} between min and max*/
