@@ -15,7 +15,6 @@ public class InputReader {
                 if (input < min || input > max) {
                     System.out.println("Please enter a number between " + min + " and " + max);
                 }
-
             } while (input < min || input > max);
         } catch (InputMismatchException e) {
             System.out.println("Invalid input!");
@@ -24,14 +23,16 @@ public class InputReader {
     }
 
 
-    public int readPassword(int numberOfDigits) {
-        int Min = (int) (Math.pow(10, numberOfDigits));
+    /**
+     * @param numberOfDigits the power of minimum limit and 1/10th of the max limit*/
+    public int readIntByLimit(int numberOfDigits) {
+        int Min = (int) (Math.pow(10, numberOfDigits -1));
         int input = 0;
         try {
             do {
                 input = sc.nextInt();
                 if (input < Min || input >= Min*10) {
-                    System.out.println("Please enter a number between 1000 and 9999");
+                    System.out.println("Please enter a number between "+ Min + " and " + (Min*10-1));
                 }
 
             } while (input < Min || input >= Min*10);
@@ -41,23 +42,8 @@ public class InputReader {
         return input;
     }
 
-    public int readID(int numberOfDigits) {
-        int Min = (int) (Math.pow(10, numberOfDigits));
-        int input = 0;
-        try {
-            do {
-                input = sc.nextInt();
-                if (input < Min || input > Min*10) {
-                    System.out.println("Please enter a number between 10000 and 99999");
-                }
-
-            } while (input < Min || input > Min*10);
-        } catch (InputMismatchException e) {
-            System.out.println("Invalid input!");
-        }
-        return input;
-    }
-
+    /**
+     * Asks for a String input until it's not empty*/
     public String readString() {
         String input = "";
         while (input.trim().isEmpty()) {
@@ -68,5 +54,9 @@ public class InputReader {
             }
         }
         return input;
+    }
+
+    public void eater(){
+        sc.nextLine();
     }
 }

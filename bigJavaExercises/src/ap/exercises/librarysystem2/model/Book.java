@@ -3,6 +3,27 @@ package ap.exercises.librarysystem2.model;
 public class Book {
 
     private String title;
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setPages(int pages) {
+        this.pages = pages;
+    }
+
+    public void setPublicationYear(int publicationYear) {
+        this.publicationYear = publicationYear;
+    }
+
+    public void setCopies(int copies) {
+        this.copies = copies;
+    }
+
     private String author;
     private int pages;
     private int publicationYear;
@@ -45,17 +66,24 @@ public class Book {
     public int getCopies() {return copies;}
 
     /**substitutes one from the copies */
-    public void substituteCopyByOne() {
-        copies--;
+    public boolean substituteCopyByOne() {
+        if (copies > 0) {
+            copies--;
+            return true;
+        }
+        return false;
     }
 
     /**adds one to the number of copies*/
     public void addCopyByOne() {
         copies++;
     }
-//    @Override
-//    public String toString() {
-//        return this.title +regex + this.author +regex + this.pages +regex + this.publicationYear + regex + this.copies + regex;
-//    }
+
+    @Override
+    public String toString() {
+        return String.format("Title: %s | Author: %s | Year: %d | Pages: %d | Copies: %d",
+                title, author, publicationYear, pages, copies);
+    }
+
 
 }

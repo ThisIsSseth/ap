@@ -9,6 +9,9 @@ public class Member {
     private String lastName;
     private int id;
     private int pw;
+    final public static int ID_LENGTH= 5;
+    final public static int PW_LENGTH= 4;
+
 //    protected String regex = "@";
 
     /**
@@ -58,12 +61,12 @@ public class Member {
         this.pw = pw;
     }
 
+    public int getIDLength(){
+        return ID_LENGTH;
+    }
 
-//    /**
-//     * firstName@LastName@ID@PW@*/
-//    @Override
-//    public String toString() {
-//        return firstName + regex + lastName + regex + id + regex + pw + regex;
-//    }
+    public int getPWLength(){
+        return PW_LENGTH;
+    }
 
 }

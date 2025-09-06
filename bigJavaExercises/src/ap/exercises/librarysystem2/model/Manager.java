@@ -10,10 +10,7 @@ public class Manager extends Member {
         this.education = education;
     }
 
-//    @Override
-//    public String toString() {
-//        return super.toString() + this.education + regex;
-//    }
+
 
     public String getEducation() {
         return education;

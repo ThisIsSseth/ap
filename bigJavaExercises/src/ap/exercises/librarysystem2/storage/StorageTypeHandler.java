@@ -30,9 +30,4 @@ public class StorageTypeHandler {
         }
         return new TabSplitHandler<>(clazz);
     }
-
-    public static void main(String[] args) {
-        FileHandler fh = StorageTypeHandler.create(Class.class, "storage/config.txt");
-
-    }
 }

@@ -8,7 +8,7 @@ public class Student extends Member {
     private LocalDate signUpDate;
     private boolean ACTIVE = true;
     private boolean DEACTIVE = false;
-    private boolean status = ACTIVE;
+    private boolean status = ACTIVE; //by default
 
     /**
      * @param firstName First name
@@ -24,14 +24,22 @@ public class Student extends Member {
         this.signUpDate = signUpDate;
     }
 
-    /**Used for uploading data for accurate sign up date */
+    /** Used for uploading data for accurate sign up date
+     *       @param firstName First name
+     *      @param lastName  Last name
+     *       @param id        ID (make sure the id is unique) a number between 10000 and 99999
+     *       @param major     Major
+     *      @param pw a number between 1000 and 9999 */
     public Student(String firstName, String lastName, int id, String major, int pw) {
         this(firstName, lastName, id, major, LocalDate.now(), pw);
     }
 
+    /**
+     * @param status Active = true, Deactive = false*/
     public void setStatus(boolean status) {
         this.status = status;
     }
+
     public boolean getStatus() {
         return status;
     }

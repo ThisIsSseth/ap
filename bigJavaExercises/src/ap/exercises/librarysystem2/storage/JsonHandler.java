@@ -1,24 +1,30 @@
 package ap.exercises.librarysystem2.storage;
 
 import ap.exercises.librarysystem2.model.Book;
+import ap.exercises.librarysystem2.model.Library;
+import ap.exercises.librarysystem2.utils.DefaultLibraryCreator;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.*;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class JsonHandler<T> implements FileHandler<T>{
 
-    private final Gson gson = new Gson();
+    private final Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+            .setPrettyPrinting()
+            .create();
 
     /** It's for one specific data type*/
     public JsonHandler() {    }
 
     @Override
     public void save(T data, File file, Type type) {
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(file, false))) {
             gson.toJson(data, writer);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -58,32 +64,12 @@ public class JsonHandler<T> implements FileHandler<T>{
     }
 
 
-    public static void
-     main(String[] args) {
-        Book book = new Book("bookName", "Author", 150, 1999, 5);
-        JsonHandler<Book> jsonHandler = new JsonHandler();
-
-//        System.out.println(book.getTitle());
-//        System.out.println(book.getAuthor());
-//
-//        jsonHandler.save(book, new File("book.json"), Book.class);
-//        Book retrievedBook = jsonHandler.load(new File("book.json"), Book.class);
-//
-//        System.out.println(retrievedBook.getTitle());
-//        System.out.println(retrievedBook.getAuthor());
-
-        jsonHandler.clean(new File("book.json"));
-
-        List<Book> bookList = new ArrayList<>();
-        bookList.add(book);
-        bookList.add(new Book("bk", "ATH", 120, 1800, 0));
-//        jsonHandler.saveList(bookList, new File("bookList.json"), Book.class); See this is where I went wrong
-        jsonHandler.saveList(bookList, new File("bookList.json"), new TypeToken<List<Book>>() {}.getType());
-        List<Book> retrievedBookList = jsonHandler.loadList(new File("bookList.json"), new TypeToken <List<Book>>() {}.getType());
-
-        for (Book b : retrievedBookList) {
-            System.out.println(b.getTitle());
-            System.out.println(b.getAuthor());
-        }
-    }
+public static void main(String[] args) {
+    Library library = DefaultLibraryCreator.create();
+    JsonHandler<Library> jsonHandler = new JsonHandler<Library>();
+    File file = new File("test.json");
+    jsonHandler.save(library, file, Library.class);
+    Library recievedLibrary = jsonHandler.load(file, Library.class);
+    System.out.println(recievedLibrary.getManager().toString());
+}
 }

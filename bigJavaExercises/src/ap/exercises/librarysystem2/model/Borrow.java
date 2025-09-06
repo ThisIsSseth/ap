@@ -57,6 +57,9 @@ public class Borrow {
         return student;
     }
 
+    public LocalDate getReturnDate() {
+        return returnDate;
+    }
 }
 
 

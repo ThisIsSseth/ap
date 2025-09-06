@@ -19,6 +19,7 @@ class StudentCollection {
     }
 
 
-
-
+    public int getSize() {
+        return this.studentMap.size();
+    }
 }

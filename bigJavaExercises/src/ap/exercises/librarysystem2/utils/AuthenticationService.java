@@ -9,10 +9,14 @@ public class AuthenticationService {
 
     Library library;
 
+    public AuthenticationService(Library library) {
+        this.library = library;
+    }
+
     public void studentSignUp(Student student) {
         if (library.getStudentMap().containsKey(student.getId())) {
             System.out.println("Student id already exists. Please Login.");
-        } else if (library.getStudentPendingSignUpMap().containsKey(student.getId())) {
+        } else if (!library.getStudentPendingSignUpMap().containsKey(student.getId())) {
             library.getStudentPendingSignUpMap().put(student.getId(), student);
         } else System.out.println("You have already requested sign up.");
     }
@@ -31,7 +35,7 @@ public class AuthenticationService {
 
     public Operator OPLogin(int id, int pw) {
         if (library.getOperatorMap().containsKey(id)) {
-            if (library.getStudentMap().get(id).getPw() == pw) {
+            if (library.getOperatorMap().get(id).getPw() == pw) {
                 return library.getOperatorMap().get(id);
             }
             System.out.println("Wrong password.");
@@ -41,9 +45,8 @@ public class AuthenticationService {
         return null;
     }
 
-    public Manager managerLogin(int pw) {
-        if (library.managerPasswordCheck(pw))
-            return library.getManager();
+    public Manager managerLogin(int id, int pw) {
+        if (library.managerPasswordCheck(pw) && library.getManager().getId() == id) return library.getManager();
         return null;
     }
 
