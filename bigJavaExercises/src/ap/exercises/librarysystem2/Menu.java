@@ -11,11 +11,9 @@ public class Menu {
     private List<String> OpMenu = new ArrayList<String>();
     private List<String> ManagerMenu = new ArrayList<String>();
     private List<String> GuestMenu = new ArrayList<String>();
+    private List<String> BookSearchMenu = new ArrayList<String>();
 
 
-    enum menus {start, student, op, manager, guest}
-
-    ;
 
 
     //Please check for accuracy of option between Menu and Main
@@ -47,6 +45,10 @@ public class Menu {
         ManagerMenu.add("Add operator");
         ManagerMenu.add("See Operator's statistics");
         ManagerMenu.add("See a student's statistics");
+
+        BookSearchMenu.add("Title ");
+        BookSearchMenu.add("Author ");
+        BookSearchMenu.add("Publication Year ");
 
     }
 
@@ -97,6 +99,14 @@ public class Menu {
 
     public Integer getGuestMenuSize() {
         return GuestMenu.size();
+    }
+
+    public void showBookSearchMenu() {
+        show(BookSearchMenu);
+    }
+
+    public Integer getBookSearchMenuSize() {
+        return BookSearchMenu.size();
     }
 
     public void showGoBack() {

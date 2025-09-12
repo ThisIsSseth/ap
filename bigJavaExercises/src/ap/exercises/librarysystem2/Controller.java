@@ -2,9 +2,9 @@ package ap.exercises.librarysystem2;
 
 import ap.exercises.librarysystem2.model.*;
 import ap.exercises.librarysystem2.repository.LibraryManager;
-import ap.exercises.librarysystem2.utils.AuthenticationService;
-import ap.exercises.librarysystem2.utils.DefaultLibraryCreator;
-import ap.exercises.librarysystem2.utils.InputReader;
+import ap.exercises.librarysystem2.utils.LoginStatus;
+import ap.exercises.librarysystem2.utils.Session;
+import ap.exercises.librarysystem2.utils.View;
 
 import java.util.List;
 
@@ -15,24 +15,15 @@ public class Controller {
     Library library;
     AuthenticationService authService;
     LibraryManager libraryManager;
+
     final int ID_LENGTH = Member.ID_LENGTH;
     final int PW_LENGTH = Member.PW_LENGTH;
 
-    InputReader inputReader = new InputReader();
+    //    InputReader inputReader = new InputReader();
+    View v = new View();
 
-    public enum LoginStatus {
-        LOGGED_OUT,
-        GUEST,
-        STUDENT,
-        OPERATOR,
-        MANAGER;
-    }
+    Session session = new Session();
 
-    LoginStatus loginStatus = LoginStatus.LOGGED_OUT;
-
-    Student student = null;
-    Manager manager = null;
-    Operator operator = null;
 
     public Controller(Library library) {
         this.library = library;
@@ -40,10 +31,15 @@ public class Controller {
         this.authService = new AuthenticationService(library);
     }
 
+    public LoginStatus getLoginStatus() {
+        return session.getLoginStatus();
+    }
+
 
     //_____Menus
+    // prbbly jst keep the menu directors
 
-    public void studentMenu(int option) {
+    public void studentMenuDirector(int option) {
         switch (option) {
             case 0 -> logout();
             case 1 -> searchBook();
@@ -51,16 +47,16 @@ public class Controller {
         }
     }
 
-    public void guestMenu(Integer option) {
+    public void guestMenuDirector(Integer option) {
         switch (option) {
-            case 1 -> out.println("Total number of users: " + libraryManager.getTotalUsers());
+//            case 1 -> out.println("Total number of users: " + libraryManager.getTotalUsers());
             case 2 -> searchBook();
             case 0 -> logout();
         }
         libraryManager.save();
     }
 
-    public void operatorMenu(Integer option) {
+    public void operatorMenuDirector(Integer option) {
         switch (option) {
             case 0 -> logout();
             case 1 -> addBook();
@@ -68,22 +64,20 @@ public class Controller {
             case 3 -> editBook();
             case 4 -> acceptBorrowRequest();
             case 5 -> receiveReturnedBook();
-            case 6 -> {
-                System.out.println("Enter ID:");
-                libraryManager.activateStudent(inputReader.readIntByLimit(ID_LENGTH));
+            case 6 -> libraryManager.activateStudent(v.askForID(ID_LENGTH));
+            case 7 -> libraryManager.deactivateStudent(v.askForID(ID_LENGTH));
+            case 8 -> studentStats();
+            case 10 -> {
+                v.printLine("Enter new password: ");
+                libraryManager.changePW(v.readIntByLimit(PW_LENGTH), session.getOperator());
             }
-            case 7 -> {
-                System.out.println("Enter ID:");
-                libraryManager.deactivateStudent(inputReader.readIntByLimit(ID_LENGTH));
-            }
-            case 8 -> {advancedStats();}
-
-            case 10 -> {System.out.println("Enter new password:");
-            libraryManager.changePW(inputReader.readIntByLimit(PW_LENGTH), operator );}
         }
+
         libraryManager.save();
     }
-    public void managerMenu(Integer option) {
+
+    public void managerMenuDirector(Integer option) {
+
     }
 
     public void startMenuDirector(int option) {
@@ -101,28 +95,22 @@ public class Controller {
     // -------op
 
     private void editBook() {
-        System.out.println("Enter the title of the book you want to edit: ");
-        String title = inputReader.readString();
+        v.printLine("Please enter the name of the book you want to edit: ");
+        String title = v.readBookTitle();
         Book book = libraryManager.findBookByTitle(title);
         if (book != null) {
-            System.out.println("""
-                    Choose field to edit:
-                    1. Title
-                    2. Author
-                    3. Pages
-                    4. Publication year
-                    5. Copies""");
+            Menu::s
             int option = inputReader.readInt(1, 5);
             System.out.println("Enter new data: ");
             switch (option) {
-                case 1 -> book.setTitle(inputReader.readString());
+                case 1 -> book.setTitle(v.askForBookTitle());
                 case 2 -> book.setAuthor(inputReader.readString());
                 case 3 -> book.setPages(inputReader.readInt(1, 5000));
                 case 4 -> book.setPublicationYear(inputReader.readInt(0, 3000));
                 case 5 -> book.setCopies(inputReader.readInt(0, 50));
             }
         } else {
-            System.out.println("Book not found.");
+            v.printLine("Book not found!");
         }
     }
 
@@ -142,14 +130,13 @@ public class Controller {
         libraryManager.approveBorrowRequest(operator, id, title);
     }
 
-    private void advancedStats() {
-        System.out.println("Enter student ID: ");
-        int id = inputReader.readIntByLimit(ID_LENGTH);
-        out.println(libraryManager.composeOpStat(id));
+    private void studentStats() {
+        System.out.println(libraryManager.composeOpStat(v.askForID(ID_LENGTH)));
     }
 
 
-    private void searchBook() {
+    private void searchBook() { //it has a list and a director NEEDS EDITING
+        //show search book list
         System.out.println("""
                 Search by:
                 1. Title
@@ -159,7 +146,6 @@ public class Controller {
                 """);
         int option = inputReader.readInt(0, 3);
         List<Book> results = null;
-        inputReader.eater();
         switch (option) {
             case 1 -> {
                 System.out.print("Title: ");
@@ -173,7 +159,9 @@ public class Controller {
                 System.out.print("Publication year: ");
                 results = libraryManager.searchByPublicationYear(inputReader.readInt(0, 3000));
             }
-            default -> { return; }
+            default -> {
+                return;
+            }
         }
         if (results == null || results.isEmpty()) {
             System.out.println("No results found.");
@@ -190,9 +178,8 @@ public class Controller {
 
 
     private void addBook() {
-        libraryManager.addNewBook(getBookFullInfo());
+        libraryManager.addNewBook(v.getBookFullInfo());
     }
-
 
 
     // ----LOGINs
@@ -200,6 +187,7 @@ public class Controller {
     private void guestLogin() {
         loginStatus = LoginStatus.GUEST;
     }
+
     private void operatorLogin() {
         out.println("Enter ID: ");
         int ID = inputReader.readIntByLimit(ID_LENGTH);
@@ -212,7 +200,9 @@ public class Controller {
     }
 
     private void managerLogin() {
+        out.println("Enter ID: ");
         int ID = inputReader.readIntByLimit(ID_LENGTH);
+        out.println("Enter password: ");
         int password = inputReader.readIntByLimit(PW_LENGTH);
         manager = authService.managerLogin(ID, password);
         if (manager != null) {
@@ -237,7 +227,7 @@ public class Controller {
 
     private void logout() {
         System.out.println("You are logged out");
-        loginStatus = LoginStatus.LOGGED_OUT;
+        session.setLoginStatus(LoginStatus.LOGGED_OUT);
     }
 
 
@@ -263,19 +253,6 @@ public class Controller {
         return new Student(name, lastName, ID, major, password);
     }
 
-    private Book getBookFullInfo() {
-        System.out.println("Enter book name: ");
-        String name = inputReader.readString();
-        System.out.println("Enter book author: ");
-        String author = inputReader.readString();
-        System.out.println("Enter publication year: ");
-        int publicationYear = inputReader.readInt(0, 2025);
-        System.out.println("Enter book pages: ");
-        int pages = inputReader.readInt(0, 999);
-        System.out.println("Enter the number of copies: ");
-        int copies = inputReader.readInt(0, 10);
 
-        return new Book(name, author, pages, publicationYear, copies);
-    }
 }
 

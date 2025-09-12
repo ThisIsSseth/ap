@@ -10,7 +10,7 @@ public class DefaultLibraryCreator {
 
         String MANAGER_FIRSTNAME = "DefaultManager";
         String MANAGER_LASTNAME = "Greg";
-        Integer MANAGER_ID = 9999;
+        Integer MANAGER_ID = 99999;
         Integer MANAGER_PASSWORD = 1234;
         String MANAGER_EDUCATION = "PhD Something";
 

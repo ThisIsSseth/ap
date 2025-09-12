@@ -13,9 +13,9 @@ import java.util.List;
 public class LibraryManager {
     Library library;
 
-    BookCollection bookCollection;
-    StudentCollection studentCollection;
-    BorrowCollection borrowCollection;
+    BookService bookCollection;
+    StudentService studentCollection;
+    BorrowService borrowCollection;
 
     File file = new File(FileInitializer.getFileName());
 
@@ -23,9 +23,9 @@ public class LibraryManager {
 
     public LibraryManager(Library library) {
         this.library = library;
-        this.bookCollection = new BookCollection(library);
-        this.studentCollection = new StudentCollection(library);
-        this.borrowCollection = new BorrowCollection(library);
+        this.bookCollection = new BookService(library);
+        this.studentCollection = new StudentService(library);
+        this.borrowCollection = new BorrowService(library);
     }
 
     public Book findBookByTitle(String title) {
@@ -108,6 +108,14 @@ public class LibraryManager {
                 "- Total borrows: " + total + "\n" +
                 "- Currently not returned: " + notReturned + "\n" +
                 "- Overdue returns: " + overdue;
+    }
+
+    //--- manager
+    public void addOperator(Operator op) {
+        if(!library.getOperatorMap().containsKey(op.getId()))
+        library.getOperatorMap().put(op.getId(), op);
+        else
+            System.out.println("Operator with this Id already exists.");
     }
 
 
