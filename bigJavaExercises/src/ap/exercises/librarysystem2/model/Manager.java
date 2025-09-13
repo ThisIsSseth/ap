@@ -10,8 +10,6 @@ public class Manager extends Member {
         this.education = education;
     }
 
-
-
     public String getEducation() {
         return education;
     }

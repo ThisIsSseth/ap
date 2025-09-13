@@ -8,7 +8,7 @@ import ap.exercises.librarysystem2.utils.View;
 
 import java.util.List;
 
-import static java.lang.System.*;
+import static java.lang.System.exit;
 
 
 public class Controller {
@@ -19,9 +19,7 @@ public class Controller {
     final int ID_LENGTH = Member.ID_LENGTH;
     final int PW_LENGTH = Member.PW_LENGTH;
 
-    //    InputReader inputReader = new InputReader();
     View v = new View();
-
     Session session = new Session();
 
 
@@ -99,15 +97,21 @@ public class Controller {
         String title = v.readBookTitle();
         Book book = libraryManager.findBookByTitle(title);
         if (book != null) {
-            Menu::s
-            int option = inputReader.readInt(1, 5);
+            v.printLine("""
+                    Choose a field to edit:
+                    1. Title
+                    2. Author
+                    3. Pages
+                    4. Publication year
+                    5. Copies""");
+            int option = v.readInt(1, 5);
             System.out.println("Enter new data: ");
             switch (option) {
                 case 1 -> book.setTitle(v.askForBookTitle());
-                case 2 -> book.setAuthor(inputReader.readString());
-                case 3 -> book.setPages(inputReader.readInt(1, 5000));
-                case 4 -> book.setPublicationYear(inputReader.readInt(0, 3000));
-                case 5 -> book.setCopies(inputReader.readInt(0, 50));
+                case 2 -> book.setAuthor(v.readString());
+                case 3 -> book.setPages(v.readInt(1, 5000));
+                case 4 -> book.setPublicationYear(v.readInt(0, 3000));
+                case 5 -> book.setCopies(v.readInt(0, 50));
             }
         } else {
             v.printLine("Book not found!");
@@ -115,19 +119,17 @@ public class Controller {
     }
 
     private void receiveReturnedBook() {
-        out.println("Enter student ID: ");
-        int id = inputReader.readIntByLimit(ID_LENGTH);
-        out.println("Enter book title: ");
-        String title = inputReader.readString();
-        libraryManager.receiveReturnBook(id, title, operator);
+        int id = v.askForID(ID_LENGTH);
+        String title = v.askForBookTitle();
+        libraryManager.receiveReturnBook(id, title, session.getOperator());
     }
 
     private void acceptBorrowRequest() {
         System.out.println("Enter student ID: ");
-        int id = inputReader.readIntByLimit(ID_LENGTH);
+        int id = v.readIntByLimit(ID_LENGTH);
         System.out.println("Enter book title: ");
-        String title = inputReader.readString();
-        libraryManager.approveBorrowRequest(operator, id, title);
+        String title = v.readString();
+        libraryManager.approveBorrowRequest(session.getOperator(), id, title);
     }
 
     private void studentStats() {
@@ -137,27 +139,27 @@ public class Controller {
 
     private void searchBook() { //it has a list and a director NEEDS EDITING
         //show search book list
-        System.out.println("""
+        v.printLine("""
                 Search by:
                 1. Title
                 2. Author
                 3. Publication Year
                 0. Go Back
                 """);
-        int option = inputReader.readInt(0, 3);
+        int option = v.readInt(0, 3);
         List<Book> results = null;
         switch (option) {
             case 1 -> {
                 System.out.print("Title: ");
-                results = libraryManager.searchByTitle(inputReader.readString());
+                results = libraryManager.searchByTitle(v.readString());
             }
             case 2 -> {
                 System.out.print("Author: ");
-                results = libraryManager.searchByAuthor(inputReader.readString());
+                results = libraryManager.searchByAuthor(v.readString());
             }
             case 3 -> {
                 System.out.print("Publication year: ");
-                results = libraryManager.searchByPublicationYear(inputReader.readInt(0, 3000));
+                results = libraryManager.searchByPublicationYear(v.readInt(0, 3000));
             }
             default -> {
                 return;
@@ -171,9 +173,9 @@ public class Controller {
     }
 
     private void requestBook() {
-        System.out.println("Enter book name: ");
-        String title = inputReader.readString();
-        libraryManager.requestBook(student.getId(), title);
+        v.printLine("Enter book name: ");
+        String title = v.readString();
+        libraryManager.requestBook(session.getStudent().getId(), title);
     }
 
 
@@ -185,49 +187,35 @@ public class Controller {
     // ----LOGINs
 
     private void guestLogin() {
-        loginStatus = LoginStatus.GUEST;
+        session.setLoginStatusToGuest();
     }
 
     private void operatorLogin() {
-        out.println("Enter ID: ");
-        int ID = inputReader.readIntByLimit(ID_LENGTH);
-        out.println("Enter password: ");
-        int password = inputReader.readIntByLimit(PW_LENGTH);
-        operator = authService.OPLogin(ID, password);
-        if (operator != null) {
-            loginStatus = LoginStatus.OPERATOR;
-        }
+        int ID = v.askForID(ID_LENGTH);
+        int password = v.askForPW(PW_LENGTH);
+        session.setOperator(authService.OPLogin(ID, password));
     }
 
     private void managerLogin() {
-        out.println("Enter ID: ");
-        int ID = inputReader.readIntByLimit(ID_LENGTH);
-        out.println("Enter password: ");
-        int password = inputReader.readIntByLimit(PW_LENGTH);
-        manager = authService.managerLogin(ID, password);
-        if (manager != null) {
-            loginStatus = LoginStatus.MANAGER;
-        }
+        int ID = v.askForID(ID_LENGTH);
+        int password = v.askForPW(PW_LENGTH);
+        session.setManager(authService.managerLogin(ID, password));
+
     }
 
     private void studentLogin() {
-        System.out.println("Enter ID:");
-        int ID = inputReader.readIntByLimit(ID_LENGTH);
-        System.out.println("Enter password:");
-        int password = inputReader.readIntByLimit(PW_LENGTH);
-        student = authService.studentLogin(ID, password);
-        if (student != null) {
-            loginStatus = LoginStatus.STUDENT;
-        }
+        int ID = v.askForID(ID_LENGTH);
+        int password = v.askForPW(PW_LENGTH);
+        session.setStudent(authService.studentLogin(ID, password));
     }
 
     private void studentSignUp() {
-        authService.studentSignUp(getStudentFullInfo());
+        authService.studentSignUp(v.getStudentFullInfo(ID_LENGTH, PW_LENGTH));
     }
 
     private void logout() {
-        System.out.println("You are logged out");
-        session.setLoginStatus(LoginStatus.LOGGED_OUT);
+        v.printLine("You are logged out");
+        session.logout();
     }
 
 
@@ -238,20 +226,6 @@ public class Controller {
         exit(0);
     }
 
-    private Student getStudentFullInfo() {
-        System.out.println("Enter student name: ");
-        String name = inputReader.readString();
-        System.out.println("Enter student last name: ");
-        String lastName = inputReader.readString();
-        System.out.println("Enter student major: ");
-        String major = inputReader.readString();
-        System.out.println("Enter student password: ");
-        int password = inputReader.readIntByLimit(PW_LENGTH);
-        System.out.println("Enter student ID: ");
-        int ID = inputReader.readIntByLimit(ID_LENGTH);
-
-        return new Student(name, lastName, ID, major, password);
-    }
 
 
 }
